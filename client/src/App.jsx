@@ -1,7 +1,15 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Landing from './pages/Landing/Landing';
 
 function App() {
-  return(
-    <h1>CAMPUS HUB</h1>
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Landing/>}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
-export default App
+
+export default App;
+
