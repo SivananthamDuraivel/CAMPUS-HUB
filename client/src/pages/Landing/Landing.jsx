@@ -75,7 +75,7 @@ const Landing = () => {
                         </div>
 
                         <div className="right">
-                            <img src={rec} alt="Person" className="person" />
+                            <img src={rec} alt="rec" className="rec" />
                         </div>
                     </div>
                 </div>
