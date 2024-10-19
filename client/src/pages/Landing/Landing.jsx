@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./Landing.module.css";  // Import CSS module
+import styles from "./Landing.module.css";
 
 import logo from "./assets/logo.png";
 import rec from "./assets/rec.jpeg";
@@ -20,61 +20,61 @@ const Landing = () => {
     return (
         <main>
             <div
-                className={`${styles["big-wrapper"]} 
-                    ${darkMode ? styles.dark : styles.light} 
-                    ${menuActive ? styles.active : ""}`}
+                className={`${styles["landing-big-wrapper"]} 
+                    ${darkMode ? styles["landing-dark"] : styles["landing-light"]} 
+                    ${menuActive ? styles["landing-active"] : ""}`}
             >
-                <img src={shape} alt="" className={styles.shape} />
+                <img src={shape} alt="" className={styles["landing-shape"]} />
 
                 <header>
-                    <div className={styles.container}>
-                        <div className={styles.logo}>
+                    <div className={styles["landing-container"]}>
+                        <div className={styles["landing-logo"]}>
                             <img src={logo} alt="Logo" />
                             <h3>Campus Hub</h3>
                         </div>
 
-                        <div className={styles.links}>
+                        <div className={styles["landing-links"]}>
                             <ul>
                                 <li><a href="#">Features</a></li>
                                 <li><a href="#">Pricing</a></li>
                                 <li><a href="#">Testimonials</a></li>
-                                <li><a href="/auth" className={styles.btn}>Sign up</a></li>
+                                <li><a href="/auth" className={styles["landing-btn"]}>Sign up</a></li>
                             </ul>
                         </div>
 
-                        <div className={styles.overlay}></div>
+                        <div className={styles["landing-overlay"]}></div>
 
-                        <div className={styles["hamburger-menu"]} onClick={toggleMenu}>
-                            <div className={styles.bar}></div>
+                        <div className={styles["landing-hamburger-menu"]} onClick={toggleMenu}>
+                            <div className={styles["landing-bar"]}></div>
                         </div>
                     </div>
                 </header>
 
-                <div className={styles["showcase-area"]}>
-                    <div className={styles.container}>
-                        <div className={styles.left}>
-                            <div className={styles["big-title"]}>
+                <div className={styles["landing-showcase-area"]}>
+                    <div className={styles["landing-container"]}>
+                        <div className={styles["landing-left"]}>
+                            <div className={styles["landing-big-title"]}>
                                 <h1>Future is here,</h1>
                                 <h1>Start Exploring now.</h1>
                             </div>
-                            <p className={styles.text}>
+                            <p className={styles["landing-text"]}>
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                                 Delectus eius distinctio odit, magni magnam qui ex perferendis vitae!
                             </p>
-                            <div className={styles.cta}>
-                                <a href="/auth" className={styles.btn}>Get started</a>
+                            <div className={styles["landing-cta"]}>
+                                <a href="/auth" className={styles["landing-btn"]}>Get started</a>
                             </div>
                         </div>
 
-                        <div className={styles.right}>
-                            <img src={rec} alt="rec" className={styles.rec} />
+                        <div className={styles["landing-right"]}>
+                            <img src={rec} alt="rec" className={styles["landing-rec"]} />
                         </div>
                     </div>
                 </div>
 
-                <div className={styles["bottom-area"]}>
-                    <div className={styles.container}>
-                        <button className={styles["toggle-btn"]} onClick={toggleDarkMode}>
+                <div className={styles["landing-bottom-area"]}>
+                    <div className={styles["landing-container"]}>
+                        <button className={styles["landing-toggle-btn"]} onClick={toggleDarkMode}>
                             <i className="far fa-moon"></i>
                             <i className="far fa-sun"></i>
                         </button>
