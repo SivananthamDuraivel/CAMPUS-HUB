@@ -2,12 +2,12 @@ import {useState} from "react";
 import {useAuthContext} from "./useAuthContext";
 
 export const useSignUp = ()=>{
-  const [error,setError] = useState(null);
-  const [isLoading,setIsLoading] = useState(null);
+  const [rerror,setRerror] = useState(null);
+  const [isRloading,setIsLoading] = useState(null);
   const {dispatch} = useAuthContext()
   const signup = async(email,mobile,password,cpassword)=>{
     setIsLoading(true);
-    setError(null);
+    setRerror(null);
 
     const response = await fetch("/api/auth/register",{
       method:'POST',
@@ -20,7 +20,7 @@ export const useSignUp = ()=>{
     if(!response.ok)
     {
       setIsLoading(false)
-      setError(json.error)
+      setRerror(json.error)
     }
     if(response.ok)
     {
@@ -29,5 +29,5 @@ export const useSignUp = ()=>{
       setIsLoading(false);
     }
   }
-  return {signup,isLoading,error};
+  return {signup,isRloading,rerror};
 }

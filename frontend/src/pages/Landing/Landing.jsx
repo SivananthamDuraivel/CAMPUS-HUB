@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "./Landing.css"; 
-import logo from "./assets/logo.png"
-import rec  from './assets/rec.jpeg'
-import shape from './assets/shape.png'
+import styles from "./Landing.module.css";
+import logo from "./assets/logo.png";
+import rec from "./assets/rec.jpeg";
+import shape from "./assets/shape.png";
 import {Link} from "react-router-dom";
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
@@ -12,18 +12,6 @@ const Landing = () => {
     const [darkMode, setDarkMode] = useState(false);
     const [menuActive, setMenuActive] = useState(false);
 
-    useEffect(() => {
-        // When darkMode is toggled, add/remove the 'dark' or 'light' class to the wrapper
-        const bigWrapper = document.querySelector(".big-wrapper");
-        if (darkMode) {
-            bigWrapper.classList.remove("light");
-            bigWrapper.classList.add("dark");
-        } else {
-            bigWrapper.classList.remove("dark");
-            bigWrapper.classList.add("light");
-        }
-    }, [darkMode]);
-
     const toggleDarkMode = () => {
         setDarkMode((prevMode) => !prevMode);
     };
@@ -31,6 +19,7 @@ const Landing = () => {
     const toggleMenu = () => {
         setMenuActive((prevActive) => !prevActive);
     };
+
     const {user} = useAuthContext();
     const {logout} = useLogout();
     const [nav,setNav]=useState(false);
@@ -47,27 +36,30 @@ const Landing = () => {
         window.removeEventListener('resize', handleResize);
       };
     })
-  
     return (
         <main>
-            <div className={`big-wrapper ${darkMode ? "dark" : "light"} ${menuActive ? "active" : ""}`}>
-                <img src="./img/shape.png" alt="" className="shape" />
+            <div
+                className={`${styles["landing-big-wrapper"]} 
+                    ${darkMode ? styles["landing-dark"] : styles["landing-light"]} 
+                    ${menuActive ? styles["landing-active"] : ""}`}
+            >
+                <img src={shape} alt="" className={styles["landing-shape"]} />
 
                 <header>
-                    <div className="container">
-                        <div className="logo">
+                    <div className={styles["landing-container"]}>
+                        <div className={styles["landing-logo"]}>
                             <img src={logo} alt="Logo" />
                             <h3>Campus Hub</h3>
                         </div>
 
-                        <div className="links">
+                        <div className={styles["landing-links"]}>
                             <ul>
                                 <li><a href="#">Features</a></li>
                                 <li><a href="#">Pricing</a></li>
                                 <li><a href="#">Testimonials</a></li>
-                                {user && (
+                                                                {user && (
                                     <li>
-                                        <Link onClick={handleClick} className="btn">Logout</Link>
+                                        <Link onClick={handleClick} className={styles["landing-btn"]}>Logout</Link>
                                     </li>
                                 )}
                                 {!user && (
@@ -77,45 +69,45 @@ const Landing = () => {
                                 )}
                                 {!user && (
                                     <li>
-                                        <Link to="/register" className="btn">Register</Link>
+                                        <Link to="/auth" className={styles["landing-btn"]}>Register</Link>
                                     </li>
                                 )}
                             </ul>
                         </div>
 
-                        <div className="overlay"></div>
+                        <div className={styles["landing-overlay"]}></div>
 
-                        <div className="hamburger-menu" onClick={toggleMenu}>
-                            <div className="bar"></div>
+                        <div className={styles["landing-hamburger-menu"]} onClick={toggleMenu}>
+                            <div className={styles["landing-bar"]}></div>
                         </div>
                     </div>
                 </header>
 
-                <div className="showcase-area">
-                    <div className="container">
-                        <div className="left">
-                            <div className="big-title">
+                <div className={styles["landing-showcase-area"]}>
+                    <div className={styles["landing-container"]}>
+                        <div className={styles["landing-left"]}>
+                            <div className={styles["landing-big-title"]}>
                                 <h1>Future is here,</h1>
                                 <h1>Start Exploring now.</h1>
                             </div>
-                            <p className="text">
+                            <p className={styles["landing-text"]}>
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                                 Delectus eius distinctio odit, magni magnam qui ex perferendis vitae!
                             </p>
-                            <div className="cta">
-                                <a href="#" className="btn">Get started</a>
+                            <div className={styles["landing-cta"]}>
+                                <a href="/auth" className={styles["landing-btn"]}>Get started</a>
                             </div>
                         </div>
 
-                        <div className="right">
-                            <img src={rec} alt="Person" className="person" />
+                        <div className={styles["landing-right"]}>
+                            <img src={rec} alt="rec" className={styles["landing-rec"]} />
                         </div>
                     </div>
                 </div>
 
-                <div className="bottom-area">
-                    <div className="container">
-                        <button className="toggle-btn" onClick={toggleDarkMode}>
+                <div className={styles["landing-bottom-area"]}>
+                    <div className={styles["landing-container"]}>
+                        <button className={styles["landing-toggle-btn"]} onClick={toggleDarkMode}>
                             <i className="far fa-moon"></i>
                             <i className="far fa-sun"></i>
                         </button>
