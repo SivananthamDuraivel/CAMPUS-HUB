@@ -1,0 +1,111 @@
+/* ExamHallPlanner.module.css */
+
+.examHall-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin: 20px 0;
+}
+
+.examHall-requirements {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.examHall-requirements form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.examHall-requirements label {
+    font-size: 1rem;
+    color: #555;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.examHall-requirements input[type="number"],
+.examHall-requirements input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.examHall-requirements input[type="submit"] {
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+.examHall-addDepartmentBtn{
+    padding: 10px;
+    background-color: #27aa62;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.examHall-requirements input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+.examHall-addDepartmentBtn:hover{
+    background-color: #0c9823;
+}
+
+.examHall-dimension {
+    display: flex;
+    gap: 10px;
+}
+
+.examHall-dimension input {
+    flex: 1;
+}
+
+.examHall-getDepartment {
+    display: flex;
+    gap: 10px;
+}
+
+.examHall-getDepartment input[type="text"] {
+    flex: 1;
+}
+.examHall-actions{
+    display: flex;
+    gap: .5rem;
+}
+.examHall-actions button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.examHall-actions button:hover {
+    background-color: #0056b3;
+}
+
+.examHall-actions button:nth-child(2) {
+    background-color: #dc3545;
+}
+
+.examHall-actions button:nth-child(2):hover {
+    background-color: #c82333;
+}   
