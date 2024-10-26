@@ -5,12 +5,11 @@ const validator = require("validator");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  email:{
+  name: {
     type: String,
     required: true,
-    unique: true,
   },
-  mobile:{
+  email:{
     type: String,
     required: true,
     unique: true,
@@ -18,11 +17,16 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  role: {
+    type: String,
+    enum: ["admin" , "university" , "student"],
+    default: "student"
+  },
 })
 
-userSchema.statics.register = async function(email,mobile,password){
-  if(!email ||!mobile|| !password)
+userSchema.statics.register = async function(email,name,password){
+  if(!email ||!name|| !password)
   {
     throw Error("All fields must be filled");
   }
@@ -34,10 +38,6 @@ userSchema.statics.register = async function(email,mobile,password){
   {
     throw Error("Password is not strong enough");
   }
-  if(!validator.isMobilePhone(mobile,'en-IN'))
-  {
-    throw Error("Mobile number is invalid!!");
-  }
   const exists = await this.findOne({email});
   if(exists)
   {
@@ -46,7 +46,7 @@ userSchema.statics.register = async function(email,mobile,password){
 
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password,salt);
-  const user = this.create({email,mobile,password:hash});
+  const user = this.create({email,name,password:hash});
 
   return user
 }
