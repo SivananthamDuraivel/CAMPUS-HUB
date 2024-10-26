@@ -62,14 +62,10 @@ const Landing = () => {
                                         <Link onClick={handleClick} className={styles["landing-btn"]}>Logout</Link>
                                     </li>
                                 )}
+
                                 {!user && (
                                     <li>
-                                        <Link to="/login" className="">Login</Link>
-                                    </li>
-                                )}
-                                {!user && (
-                                    <li>
-                                        <Link to="/auth" className={styles["landing-btn"]}>Register</Link>
+                                        <Link to="/auth" className={styles["landing-btn"]}>Login</Link>
                                     </li>
                                 )}
                             </ul>
