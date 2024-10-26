@@ -8,7 +8,6 @@ function App() {
   return(
     <div className="App">
       <BrowserRouter>
-        {/* <Navbar/> */}
         <div className="pages">
           <Routes>
             <Route path="/" element={<LandingPage/>}></Route>
