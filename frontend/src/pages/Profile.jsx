@@ -6,13 +6,13 @@ const Profile = ()=>{
   const [userDetail,setUserDetail] = useState({});
   useEffect(()=>{
     const fetchUser = async()=>{
-      const response = await fetch('/api/user/'+user.email,{
+      const response = await fetch('http://localhost:5000/api/user/'+user.email,{
         headers:{'Authorization':`Bearer ${user.token}`}
       })
       const json = await response.json()
       if(response.ok)
       {
-        console.log(json)
+        console.log(">>"+json)
         setUserDetail(json)
       }
     }

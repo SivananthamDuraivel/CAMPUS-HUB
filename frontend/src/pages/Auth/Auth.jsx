@@ -30,7 +30,6 @@ const Auth = () => {
     const handleClick = async (e) => {
         e.preventDefault();
         await login(email, password);
-        console.log(error)
     };
     const [signUpMode, setSignUpMode] = useState(false);
 
