@@ -3,6 +3,7 @@ import { useAuthContext } from "./hooks/useAuthContext";
 import Profile from "./pages/Profile";
 import LandingPage from "./pages/Landing/Landing"
 import Auth from "./pages/Auth/Auth"
+import ExamHallPlanner from './pages/HallPlanner/ExamHallPlanner';
 function App() {
   const {user} = useAuthContext()
   return(
@@ -14,6 +15,7 @@ function App() {
             <Route path="/" element={<LandingPage/>}></Route>
             <Route path="/auth" element={!user?<Auth/>:<Profile/>}></Route>
             <Route path="/profile" element={user?<Profile/>:<Navigate to="/"/>}></Route>
+            <Route path="/examHallPlanner" element={<ExamHallPlanner/>}></Route>
           </Routes>
         </div>
       </BrowserRouter>
