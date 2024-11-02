@@ -7,7 +7,7 @@ import { useSignUp } from "../../hooks/useSignup";
 const Auth = () => {
     const {signup,isRloading,rerror} = useSignUp();
     const [remail,setRemail] = useState('');
-    const [mobile,setMobile] = useState('');
+    const [name,setname] = useState('');
     const [rpassword,setRpassword] = useState('');
     const [cpassword,setCpassword] = useState('');
     const [passError,setPassError] = useState(null);
@@ -20,7 +20,7 @@ const Auth = () => {
         else
         {
           setPassError(null);
-          await signup(remail,mobile,rpassword,cpassword);
+          await signup(remail,name,rpassword,cpassword);
           console.log(rerror)
         }
       }
@@ -30,7 +30,6 @@ const Auth = () => {
     const handleClick = async (e) => {
         e.preventDefault();
         await login(email, password);
-        console.log(error)
     };
     const [signUpMode, setSignUpMode] = useState(false);
 
@@ -85,7 +84,7 @@ const Auth = () => {
                         </div>
                         <div className={styles["auth-input-field"]}>
                             <i className="fas fa-user"></i>
-                            <input type="text" onChange={(e)=>setMobile(e.target.value)} value={mobile} placeholder="Mobile Number"/>
+                            <input type="text" onChange={(e)=>setname(e.target.value)} value={name} placeholder="Name"/>
                         </div>
                         <div className={styles["auth-input-field"]}>
                             <i className="fas fa-lock"></i>

@@ -3,10 +3,14 @@ const express = require("express");
 const auth = require("./routes/authRoute");
 const userRoute = require("./routes/userRoutes");
 const {mongoose} = require("mongoose");
+const cors = require("cors")
 // const path = require("path");
 const app = express()
-app.use(express.json())
 
+app.use(express.json())
+app.use(cors({
+  origin: 'http://localhost:5173',
+}));
 
 app.use("/api/auth",auth);
 app.use("/api/user",userRoute)
@@ -17,6 +21,10 @@ app.use("/api/user",userRoute)
 // app.get("*",function(req,res){
 //   res.sendFile(path.join(__dirname,"./frontend/public/index.html"))
 // })
+
+app.get("/",(req,res)=>{
+  res.json("hello")
+})
 
 mongoose.connect(process.env.MONGO_URI)
 .then(
