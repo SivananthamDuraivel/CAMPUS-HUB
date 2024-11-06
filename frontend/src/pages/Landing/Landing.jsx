@@ -55,7 +55,7 @@ const Landing = () => {
                         <div className={styles["landing-links"]}>
                             <ul>
                                 <li><a href="#">Events</a></li>
-                                <li><a href="#"></a></li>
+                                <li><Link to="/addPeople">Add Students</Link></li>
                                 <li><a href="#"></a></li>
                                 {user && (
                                     <li>

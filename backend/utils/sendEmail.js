@@ -14,7 +14,7 @@ const sendEmail = async (message,receiver)=>{
   const mailData = {
     from: 'receiverftn@gmail.com',
     to: receiver,
-    subject: `Message From Serve Surplus`,
+    subject: `Message from Campus Grid`,
     html:message,
   };
   

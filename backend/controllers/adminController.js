@@ -1,2 +1,2 @@
 const User = require("../models/userModel");
-const College = require("../models/CollegeModel");
+const College = require("../models/CollegeModel")
