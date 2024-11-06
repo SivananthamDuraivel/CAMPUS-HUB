@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
-import { useLogout } from "../hooks/useLogout";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useLogout } from "../../hooks/useLogout";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import { FaBars } from "react-icons/fa";
 import { useEffect, useState } from "react";
 const Navbar = () => {
