@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const College = require("../models/CollegeModel");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("../utils/sendEmail")
 const createToken = (_id)=>{
   return jwt.sign({_id},process.env.SECRET_KEY,{expiresIn:'3d'});
 }
@@ -41,7 +42,7 @@ const addTeacher = async (req, res) => {
     if (admin.role !== "admin") {
       return res.status(403).json({ error: "You are not authorized to add teachers" });
     }
-    
+    sendEmail("Hello","sakthilakshmims@gmail.com")
     let college = await College.findOne({ name: collegeName });
     if (!college) {
       return res.status(404).json({ error: "College not found" });
