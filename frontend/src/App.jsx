@@ -1,4 +1,4 @@
-import {BrowserRouter,Routes,Route,Navigate} from "react-router-dom";
+import {BrowserRouter,Routes,Route,Navigate} from 'react-router-dom';
 import { useAuthContext } from "./hooks/useAuthContext";
 import Profile from "./pages/Profile";
 import LandingPage from "./pages/Landing/Landing"
