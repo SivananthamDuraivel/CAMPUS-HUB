@@ -1,5 +1,3 @@
-/* ExamHallPlanner.module.css */
-
 .examHall-title {
     font-size: 2rem;
     font-weight: bold;
@@ -8,7 +6,7 @@
 }
 
 .examHall-requirements {
-    max-width: 500px;
+    max-width: fit-content;
     margin: 0 auto;
     padding: 20px;
     background-color: #f7f7f7;
@@ -28,17 +26,18 @@
     font-weight: 500;
     margin-bottom: 5px;
 }
-
+ 
 .examHall-requirements input[type="number"],
 .examHall-requirements input[type="text"] {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 1rem;
+    font-size: .9rem;
 }
 
 .examHall-requirements input[type="submit"] {
-    padding: 10px;
+    width: fit-content;
+    padding: .8rem;
     background-color: #007BFF;
     color: white;
     border: none;
@@ -47,8 +46,12 @@
     font-size: 1rem;
     transition: background-color 0.3s;
 }
+.examHall-getDepartment input{
+    max-width:10rem;
+}
 .examHall-addDepartmentBtn{
-    padding: 10px;
+    width: fit-content;
+    padding: 1rem;
     background-color: #27aa62;
     color: white;
     border: none;
@@ -71,17 +74,37 @@
 }
 
 .examHall-dimension input {
+    width:4vw;
     flex: 1;
 }
 
-.examHall-getDepartment {
-    display: flex;
-    gap: 10px;
-}
+ .examHall-getDepartment {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 10px;
+ }
 
-.examHall-getDepartment input[type="text"] {
-    flex: 1;
-}
+ .input-group {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+     width: 100%;
+     /* justify-content: center; */
+ }
+
+ .input-group label {
+     width: 150px;
+ }
+
+ .input-group input {
+     width: 15vw;
+     padding: 5px;
+     border: 1px solid #ccc;
+     border-radius: 4px;
+     outline: none;
+ }
+
 .examHall-actions{
     display: flex;
     gap: .5rem;
@@ -109,3 +132,186 @@
 .examHall-actions button:nth-child(2):hover {
     background-color: #c82333;
 }   
+.studentsPerBench {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.radios {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+input[type="radio"] {
+    margin-right: 0.25rem;
+    cursor: pointer;
+}
+
+.radios p , .examHall-seatingStyle p{
+    margin: 0;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.examHall-seating-plan-container {
+    width: 100%;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.examHall-print-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 20px;
+}
+
+.examHall-print-button:hover {
+    background-color: #0056b3;
+}
+
+.examHall-edit-button {
+    float: right;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 20px;
+}
+
+.examHall-printable-content {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.examHall-seating-title {
+    padding: .5rem;
+    color: #333;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.examHall-classroom-section {
+    margin-bottom: 30px;
+    border-bottom: 2px dashed #e0e0e0;
+    padding-bottom: 20px;
+}
+
+.examHall-classroom-section h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.examHall-classroom-grid {
+    display: grid;
+    gap: 10px;
+}
+
+.examHall-row-grid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+}
+.examHall-row-grid {
+    background-color: #f9f9f9;
+}
+
+.examHall-row-grid:nth-child(even) {
+    background-color: #eaeaea;
+}
+
+.examHall-seat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(45deg, #d1d1d1, #e3e3e3);
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    color: #555;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05), inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.examHall-seat:hover {
+    background: linear-gradient(45deg, #e0e0e0, #d1d1d1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.examHall-seat.empty {
+    background: #f9f9f9;
+    color: #bbb;
+}
+
+.examHall-seat.occupied {
+    background: #c4e0e7;
+    color: #2a5579;
+}
+
+.examHall-seat.special {
+    background: #f1c40f;
+    color: #fff;
+}
+  
+.examHall-seat-input {
+    width: 90%;
+    padding: 6px;
+    text-align: center;
+    font-size: 14px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+.examHall-seat-input:focus {
+    border-color: #00796b;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.examHall-seat-input:focus {
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.examHall-seat-input::placeholder {
+    color: #bbb;
+}
+
+.examHall-seatingStyle{
+    display: flex;
+}
+.examHall-seatingMethod1{
+    display: flex;
+    gap: .5rem;
+    padding-left: 1rem;
+}
+.examHall-seatingMethod2{
+    display: flex;
+    gap: .5rem;
+    padding-left: 1rem;
+}
+.examHall-classRoom-input{
+    padding: .5rem; 
+}
+.examHall-roomTitle{
+    font-size: 1.25rem;
+    font-weight:400;
+}
