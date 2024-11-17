@@ -40,8 +40,8 @@ input {
     z-index: 5;
 }
 
-form {
-    display: flex;
+.auth-signin-signup form {
+    display: flex; 
     align-items: center;
     justify-content: center;
     flex-direction: column;
