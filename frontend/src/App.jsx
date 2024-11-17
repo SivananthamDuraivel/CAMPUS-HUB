@@ -2,6 +2,7 @@ import {BrowserRouter,Routes,Route,Navigate} from 'react-router-dom';
 import { useAuthContext } from "./hooks/useAuthContext";
 import Profile from "./pages/Profile";
 import LandingPage from "./pages/Landing/Landing"
+import AddPeople from "./pages/AddPeople/AddPeople"
 import Auth from "./pages/Auth/Auth"
 import ExamHallPlanner from './pages/HallPlanner/ExamHallPlanner';
 function App() {
@@ -14,7 +15,8 @@ function App() {
             <Route path="/" element={<LandingPage/>}></Route>
             <Route path="/auth" element={!user?<Auth/>:<Profile/>}></Route>
             <Route path="/profile" element={user?<Profile/>:<Navigate to="/"/>}></Route>
-            <Route path="/examHallPlanner" element={<ExamHallPlanner/>}></Route>
+            <Route path="/addPeople" element={user?<AddPeople/>:<Navigate to="/"/>}/>
+            <Route path="/examHallPlanner" element={<ExamHallPlanner />}></Route>
           </Routes>
         </div>
       </BrowserRouter>

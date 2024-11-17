@@ -8,11 +8,13 @@ const userSchema = new Schema({
   name: {
     type: String,
     required: true,
+    trim: true
   },
   email:{
     type: String,
     required: true,
     unique: true,
+    trim: true
   },
   password: {
     type: String,
@@ -20,12 +22,17 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ["admin" , "university" , "student"],
-    default: "student"
+    enum: ["admin" , "teacher" , "student"],
+    required: true
+  },
+  college: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'College',
+    required: true
   },
 })
 
-userSchema.statics.register = async function(email,name,password){
+userSchema.statics.register = async function(email,name,password,id,role="admin"){
   if(!email ||!name|| !password)
   {
     throw Error("All fields must be filled");
@@ -46,8 +53,7 @@ userSchema.statics.register = async function(email,name,password){
 
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password,salt);
-  const user = this.create({email,name,password:hash});
-
+  const user = this.create({email,name,password:hash,role,college: id});
   return user
 }
 userSchema.statics.login = async function(email,password){
@@ -71,6 +77,6 @@ userSchema.statics.login = async function(email,password){
 
   return user;
 }
-module.exports = mongoose.model("User_details",userSchema);
+module.exports = mongoose.model("User",userSchema);
 
 

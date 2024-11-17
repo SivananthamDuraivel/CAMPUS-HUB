@@ -49,15 +49,15 @@ const Landing = () => {
                     <div className={styles["landing-container"]}>
                         <div className={styles["landing-logo"]}>
                             <img src={logo} alt="Logo" />
-                            <h3>Campus Hub</h3>
+                            <h3>Campus Grid</h3>
                         </div>
 
                         <div className={styles["landing-links"]}>
                             <ul>
-                                <li><a href="#">Features</a></li>
-                                <li><a href="#">Pricing</a></li>
-                                <li><a href="#">Testimonials</a></li>
-                                                                {user && (
+                                <li><a href="#">Events</a></li>
+                                <li><Link to="/addPeople">Add Students</Link></li>
+                                <li><a href="#"></a></li>
+                                {user && (
                                     <li>
                                         <Link onClick={handleClick} className={styles["landing-btn"]}>Logout</Link>
                                     </li>
@@ -83,12 +83,10 @@ const Landing = () => {
                     <div className={styles["landing-container"]}>
                         <div className={styles["landing-left"]}>
                             <div className={styles["landing-big-title"]}>
-                                <h1>Future is here,</h1>
-                                <h1>Start Exploring now.</h1>
+                                <h1>Uniting Campuses, Simplifying Success</h1>
                             </div>
                             <p className={styles["landing-text"]}>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                Delectus eius distinctio odit, magni magnam qui ex perferendis vitae!
+                            "Campus Grid is your one-stop platform for campus life. Discover a smarter way to manage your academic world with ease!"
                             </p>
                             <div className={styles["landing-cta"]}>
                                 <a href="/auth" className={styles["landing-btn"]}>Get started</a>
