@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Landing.module.css";
 import logo from "./assets/logo.png";
-import rec from "./assets/rec.jpeg";
+import rec from "./assets/CampusGridImage.webp";
 import shape from "./assets/shape.png";
 import {Link} from "react-router-dom";
 import { useLogout } from "../../hooks/useLogout";
@@ -83,11 +83,11 @@ const Landing = () => {
                     <div className={styles["landing-container"]}>
                         <div className={styles["landing-left"]}>
                             <div className={styles["landing-big-title"]}>
-                                <h1>Uniting Campuses, Simplifying Success</h1>
+                                <h1>Uniting Campus, Simplifying Success</h1>
                             </div>
-                            <p className={styles["landing-text"]}>
+                            {/* <p className={styles["landing-text"]}>
                             "Campus Grid is your one-stop platform for campus life. Discover a smarter way to manage your academic world with ease!"
-                            </p>
+                            </p> */}
                             <div className={styles["landing-cta"]}>
                                 <a href="/auth" className={styles["landing-btn"]}>Get started</a>
                             </div>
