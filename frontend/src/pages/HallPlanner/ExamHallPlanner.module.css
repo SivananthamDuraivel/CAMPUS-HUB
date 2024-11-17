@@ -149,7 +149,7 @@ input[type="radio"] {
     cursor: pointer;
 }
 
-.radios p {
+.radios p , .examHall-seatingStyle p{
     margin: 0;
     font-size: 1rem;
     cursor: pointer;
@@ -199,7 +199,7 @@ input[type="radio"] {
 }
 
 .examHall-seating-title {
-    font-size: 2rem;
+    padding: .5rem;
     color: #333;
     font-weight: 700;
     margin-bottom: 20px;
@@ -226,6 +226,13 @@ input[type="radio"] {
     display: grid;
     gap: 8px;
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+}
+.examHall-row-grid {
+    background-color: #f9f9f9;
+}
+
+.examHall-row-grid:nth-child(even) {
+    background-color: #eaeaea;
 }
 
 .examHall-seat {
@@ -262,7 +269,6 @@ input[type="radio"] {
     color: #fff;
 }
   
-/* Add this to your .examHall-seat-input style */
 .examHall-seat-input {
     width: 90%;
     padding: 6px;
@@ -281,12 +287,31 @@ input[type="radio"] {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Optional: Add a smooth transition for a normal border focus state */
 .examHall-seat-input:focus {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-/* Placeholder styling for empty seats */
 .examHall-seat-input::placeholder {
     color: #bbb;
+}
+
+.examHall-seatingStyle{
+    display: flex;
+}
+.examHall-seatingMethod1{
+    display: flex;
+    gap: .5rem;
+    padding-left: 1rem;
+}
+.examHall-seatingMethod2{
+    display: flex;
+    gap: .5rem;
+    padding-left: 1rem;
+}
+.examHall-classRoom-input{
+    padding: .5rem; 
+}
+.examHall-roomTitle{
+    font-size: 1.25rem;
+    font-weight:400;
 }

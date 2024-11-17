@@ -7,7 +7,7 @@ const ExamHallPlanner = () => {
     const [row, setRow] = useState(0);
     const [column, setColumn] = useState(0);
     const [studentsPerBench, setStudentsPerBench]=useState(1);
-    const [seatingType,setSeatingType]=useState('vertical')
+    const [seatingType,setSeatingType]=useState('')
 
     const [department, setDepartment] = useState('');
     const [count, setCount] = useState('');
@@ -15,6 +15,8 @@ const ExamHallPlanner = () => {
 
     const [departmentDetails, setDepartmentDetails] = useState(new Map());
     const [rollNumberMap,setRollNumberMap]=useState(new Map());
+    const [examTitle,setExamTitle]=useState('Exam seating Arrangement')
+    const [classRoomNo,setClassRoomNo]= useState(new Map())
 
     const [seatingArrangement, setSeatingArrangement] = useState([]);
     const [editableSeatingArrangement, setEditableSeatingArrangement] = useState([]);
@@ -98,8 +100,12 @@ const ExamHallPlanner = () => {
     };
     
     const generateSeatingArrangement = (e) => {
-        console.log(rollNumberMap)
+
         e.preventDefault();
+        if(seatingType===undefined || seatingType===null || seatingType===''){
+            window.alert("Kindly select any of the seating type.")
+            return;
+        }
 
         let totalStudents = Array.from(departmentDetails.values()).reduce((a, b) => a + Number(b), 0);
 
@@ -107,59 +113,173 @@ const ExamHallPlanner = () => {
         let currentClassroom = Array.from({ length: row }, () => Array(column).fill(''));
         let i = 0;
 
-        let deptA = departmentDetails.keys().next().value;
-        let countA = departmentDetails.get(deptA);
-        departmentDetails.delete(deptA);
+        let copyDepartmentDetails = new Map(departmentDetails);
+        let copyRollNumberMap= new Map(rollNumberMap)
 
-        let deptB = departmentDetails.keys().next().value;
-        let countB = departmentDetails.get(deptB);
+        let deptA = copyDepartmentDetails.keys().next().value;
+        let countA = copyDepartmentDetails.get(deptA);
+        copyDepartmentDetails.delete(deptA);
+
+        let deptB = copyDepartmentDetails.keys().next().value;
+        let countB = copyDepartmentDetails.get(deptB);
         
-        departmentDetails.delete(deptB);
-
+        copyDepartmentDetails.delete(deptB);
+        console.log("total : "+totalStudents)
         while (i < totalStudents) {
-            for (let r = 0; r < row; r++) { 
-                for (let c = 0; c < column; c++) {
-                    
-                    if (((countB === undefined || countB === 0 || deptB === null) && countA > 0) || (r % 2 === 0 && countA > 0)) {
-                        let roll=rollNumberMap.get(deptA)
-                        rollNumberMap.set(deptA,Number(rollNumberMap.get(deptA))+1);
-                        currentClassroom[r][c] = `${deptA} : ${roll}`;
-                        countA--;
-                        if (countA === 0 && departmentDetails.size > 0) {
-                            deptA = departmentDetails.keys().next().value;
-                            countA = departmentDetails.get(deptA);
-                            departmentDetails.delete(deptA);
+            if(seatingType=='row')
+            {
+                for (let r = 0; r < row; r++) {
+                    for (let c = 0; c < column; c++) {
+                        
+                        if (((countB === undefined || countB === 0 || deptB === null) && countA > 0) || (r % 2 === 0 && countA > 0)) {
+                            let roll = copyRollNumberMap.get(deptA)
+                            copyRollNumberMap.set(deptA, Number(copyRollNumberMap.get(deptA)) + 1);
+                            currentClassroom[r][c] = `${deptA} : ${roll}`;
+                            countA--;
+                            if (countA === 0 && copyDepartmentDetails.size > 0) {
+                                deptA = copyDepartmentDetails.keys().next().value;
+                                countA = copyDepartmentDetails.get(deptA);
+                                copyDepartmentDetails.delete(deptA);
+                            }
+                        } else if (countB > 0) {
+                            let roll = copyRollNumberMap.get(deptB)
+                            copyRollNumberMap.set(deptB, Number(copyRollNumberMap.get(deptB)) + 1);
+                            currentClassroom[r][c] = `${deptB} : ${roll}`;
+                            countB--;
+                            if (countB === 0 && copyDepartmentDetails.size > 0) {
+                                deptB = copyDepartmentDetails.keys().next().value;
+                                countB = copyDepartmentDetails.get(deptB);
+                                copyDepartmentDetails.delete(deptB);
+                            }
                         }
-                    } else if (countB > 0) {
-                        let roll = rollNumberMap.get(deptB)
-                        rollNumberMap.set(deptA, Number(rollNumberMap.get(deptB))+ 1);
-                        currentClassroom[r][c] = `${deptB} : ${roll}`;
-                        countB--;
-                        if (countB === 0 && departmentDetails.size > 0) {
-                            deptB = departmentDetails.keys().next().value;
-                            countB = departmentDetails.get(deptB);
-                            departmentDetails.delete(deptB);
+                        else {
+                            currentClassroom[r][c] = '-';
                         }
+                        i++;
+
                     }
-                    else{
-                        currentClassroom[r][c] = '-';
-                    }
-                    i++;
-                    
                 }
             }
+            else if (seatingType == 'column') {
+                console.log("col")
+                for (let c = 0; c < column; c++) {
+                    for (let r = 0; r < row; r++) {
+                    
+                        if (((countB === undefined || countB === 0 || deptB === null) && countA > 0) || (c % 2 === 0 && countA > 0)) {
+                            let roll = copyRollNumberMap.get(deptA)
+                            copyRollNumberMap.set(deptA, Number(copyRollNumberMap.get(deptA)) + 1);
+                            currentClassroom[r][c] = `${deptA} : ${roll}`;
+                            countA--;
+                            if (countA === 0 && copyDepartmentDetails.size > 0) {
+                                deptA = copyDepartmentDetails.keys().next().value;
+                                countA = copyDepartmentDetails.get(deptA);
+                                copyDepartmentDetails.delete(deptA);
+                            }
+                        } else if ( countB > 0) {
+                            console.log("elseif")
+                            let roll = copyRollNumberMap.get(deptB)
+                            copyRollNumberMap.set(deptB, Number(copyRollNumberMap.get(deptB)) + 1);
+                            currentClassroom[r][c] = `${deptB} : ${roll}`;
+                            countB--;
+                            if (countB === 0 && copyDepartmentDetails.size > 0) {
+                                deptB = copyDepartmentDetails.keys().next().value;
+                                countB = copyDepartmentDetails.get(deptB);
+                                copyDepartmentDetails.delete(deptB);
+                            }
+                        }
+                        else {
+                            console.log("else prt")
+                            currentClassroom[r][c] = '-';
+                        }
+                        i++;
+
+                    }
+                }
+            }
+            else if (seatingType === 'row-mix') {
+                for (let r = 0; r < row; r++) {
+                    for (let c = 0; c < column; c++) {
+                        if ( ((r + c) % 2 === 0 && countA > 0) || ( (countB === 0 || countB=== undefined )&& countA>0)) {
+                        
+                            let roll = copyRollNumberMap.get(deptA);
+                            copyRollNumberMap.set(deptA, Number(copyRollNumberMap.get(deptA)) + 1);
+                            currentClassroom[r][c] = `${deptA} : ${roll}`;
+                            countA--;
+                            if (countA === 0 && copyDepartmentDetails.size > 0) {
+                                deptA = copyDepartmentDetails.keys().next().value;
+                                countA = copyDepartmentDetails.get(deptA);
+                                copyDepartmentDetails.delete(deptA);
+                            }
+                        } else if (countB > 0) {
+                            
+                            let roll = copyRollNumberMap.get(deptB);
+                            copyRollNumberMap.set(deptB, Number(copyRollNumberMap.get(deptB)) + 1);
+                            currentClassroom[r][c] = `${deptB} : ${roll}`;
+                            countB--;
+                            if (countB === 0 && copyDepartmentDetails.size > 0) {
+                                deptB = copyDepartmentDetails.keys().next().value;
+                                countB = copyDepartmentDetails.get(deptB);
+                                copyDepartmentDetails.delete(deptB);
+                            }
+                        } else {
+                            currentClassroom[r][c] = '-';
+                        }
+                        i++;
+                    }
+                }
+            }
+            else if (seatingType === 'column-mix') {
+                for (let c = 0; c < column; c++) {
+                    for (let r = 0; r < row; r++) {
+                        if ( ((r + c) % 2 === 0 && countA > 0) || ((countB === 0 || countB===undefined)&& countA>0)) {
+                        
+                            let roll = copyRollNumberMap.get(deptA);
+                            copyRollNumberMap.set(deptA, Number(copyRollNumberMap.get(deptA)) + 1);
+                            currentClassroom[r][c] = `${deptA} : ${roll}`;
+                            countA--;
+                            if (countA === 0 && copyDepartmentDetails.size > 0) {
+                                deptA = copyDepartmentDetails.keys().next().value;
+                                countA = copyDepartmentDetails.get(deptA);
+                                copyDepartmentDetails.delete(deptA);
+                            }
+                        } else if (countB > 0) {
+                            let roll = copyRollNumberMap.get(deptB);
+                            copyRollNumberMap.set(deptB, Number(copyRollNumberMap.get(deptB)) + 1);
+                            currentClassroom[r][c] = `${deptB} : ${roll}`;
+                            countB--;
+                            if (countB === 0 && copyDepartmentDetails.size > 0) {
+                                deptB = copyDepartmentDetails.keys().next().value;
+                                countB = copyDepartmentDetails.get(deptB);
+                                copyDepartmentDetails.delete(deptB);
+                            }
+                        } else {
+                            currentClassroom[r][c] = '-';
+                        }
+                        i++;
+                    }
+                }
+            }
+            else    
+                break;
+
             allClassrooms.push(currentClassroom);
             currentClassroom = Array.from({ length: row }, () => Array(column).fill(''));
-            
-            let tempdept=deptA
-            let tempCount=countA
-            deptA=deptB
-            countA=countB
-            deptB=tempdept
-            countB=tempCount
+
+            let tempdept = deptA
+            let tempCount = countA
+            deptA = deptB
+            countA = countB
+            deptB = tempdept
+            countB = tempCount
         }
-        
+        console.log(allClassrooms)
         setSeatingArrangement(allClassrooms);
+
+        let ind=Number(1);
+        allClassrooms.forEach((_,index) => {
+            classRoomNo.set(index,ind++);
+        });
+
         setEditableSeatingArrangement(JSON.parse(JSON.stringify(allClassrooms)));
         
     };
@@ -173,21 +293,13 @@ const ExamHallPlanner = () => {
     };
 
     const handleSeatEdit = (newValue, classIndex, rowIndex, seatIndex) => {
-        console.log("E : " + JSON.stringify(editableSeatingArrangement));
-
-        // Create a copy of the current seating arrangement
+        
         const updatedArrangement = [...editableSeatingArrangement];
-
-        // Create a copy of the classroom (classIndex) array
         updatedArrangement[classIndex] = [...updatedArrangement[classIndex]];
-
-        // Create a copy of the row (rowIndex) array
         updatedArrangement[classIndex][rowIndex] = [...updatedArrangement[classIndex][rowIndex]];
 
-        // Update the seat at the specific index
         updatedArrangement[classIndex][rowIndex][seatIndex] = newValue;
 
-        // Set the updated arrangement to state
         setEditableSeatingArrangement(updatedArrangement);
     };
 
@@ -205,6 +317,15 @@ const ExamHallPlanner = () => {
         setEditableSeatingArrangement(JSON.parse(JSON.stringify(seatingArrangement)));
     };
 
+    const handleClassRoomChange=(e,key,newValue)=>
+    {
+        e.preventDefault()
+        setClassRoomNo(prevMap => {
+            const updatedMap = new Map(prevMap); 
+            updatedMap.set(key, newValue);
+            return updatedMap       
+        });
+    }
 
     return (
         <div>
@@ -217,10 +338,23 @@ const ExamHallPlanner = () => {
                         <input type="number" placeholder="Column" onChange={(e) => setColumn(e.target.value)} />
                     </div>
                     <div className={styles['studentsPerBench']}>
-                        <label>Students per bench: </label>
+                        <label>Students per bench : </label>
                         <div className={styles['radios']}>
                             <input type="radio" name="studentsPerBench" checked={studentsPerBench === 1} onChange={() => setStudentsPerBench(1)} /> <p>One</p>
                             <input type="radio" name="studentsPerBench" checked={studentsPerBench === 2} onChange={() => setStudentsPerBench(2)} /> <p>Two</p>
+                        </div>
+                    </div>
+                    <div className={styles['examHall-seatingStyle']}>
+                        <label>Select seating method :  </label>
+                        <div className={styles['examHall-seatingMethods']}>
+                            <div className={styles['examHall-seatingMethod1']}>
+                                <input type="radio" name="seatingStyle" checked={seatingType === 'row'} onChange={() => setSeatingType('row')} /> <p>row</p>
+                                <input type="radio" name="seatingStyle" checked={seatingType === 'column'} onChange={() => setSeatingType('column')} /> <p>column</p>
+                            </div>
+                            <div className={styles['examHall-seatingMethod2']}>
+                                <input type="radio" name="seatingStyle" checked={seatingType === 'row-mix'} onChange={() => setSeatingType('row-mix')} /> <p>row-mix</p>
+                                <input type="radio" name="seatingStyle" checked={seatingType === 'column-mix'} onChange={() => setSeatingType('column-mix')} /> <p>column-mix</p>
+                            </div>
                         </div>
                     </div>
 
@@ -311,10 +445,21 @@ const ExamHallPlanner = () => {
                             <button id="examHall-printButton" className={styles['examHall-print-button']} onClick={() => printDiv('examHall-printableDiv')}>Print</button>
                             <button id="examHall-printButton" className={styles['examHall-edit-button']} onClick={(e)=>{setEditSeatingToggle(true);window.alert("Editing is enabled.")}}>Edit</button>
                             <div id="examHall-printableDiv">
-                                <center><h3 className={styles['examHall-seating-title']}>Seating Plan</h3></center>
+                                <center>{
+                                    editSeatingToggle ? <input className={styles['examHall-seating-title']} type="text" value={examTitle} onChange={(e)=>setExamTitle(e.target.value)} /> 
+                                    : <h2 className={styles['examHall-seating-title']}>{examTitle}</h2>
+                                }</center>
                                 {editableSeatingArrangement.map((classroom, classIndex) => (
                                     <div key={classIndex} className={styles['examHall-classroom-section']}>
-                                        <h3>Classroom {classIndex + 1}:</h3>
+                                        {
+                                            editSeatingToggle
+                                                ?<div> <input type='text' value={classRoomNo.get(classIndex)}
+                                                    onChange={(e)=>{handleClassRoomChange(e,classIndex,e.target.value)}}
+                                                    className={styles['examHall-classRoom-input']}
+                                                    autoFocus /><br></br></div>
+                                                : <p className={styles['examHall-roomTitle']}>Room No : {classRoomNo.get(classIndex)}</p>
+                                        }
+                                        <br />  
                                         <div className={styles['examHall-classroom-grid']} style={{ gridTemplateRows: `repeat(${classroom.length}, 1fr)` }}>
                                             {classroom.map((row, rowIndex) => (
                                                 <div key={rowIndex} className={styles['examHall-row-grid']} style={{ gridTemplateColumns: `repeat(${row.length}, 1fr)` }}>
