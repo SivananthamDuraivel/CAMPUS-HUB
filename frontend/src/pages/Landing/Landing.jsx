@@ -3,11 +3,10 @@ import styles from "./Landing.module.css";
 import logo from "./assets/logo.png";
 import rec from "./assets/CampusGridImage.webp";
 import shape from "./assets/shape.png";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { FaBars } from "react-icons/fa";
-
+import Features from "../../components/Features/Features"
 const Landing = () => {
     const [darkMode, setDarkMode] = useState(false);
     const [menuActive, setMenuActive] = useState(false);
@@ -20,22 +19,26 @@ const Landing = () => {
         setMenuActive((prevActive) => !prevActive);
     };
 
-    const {user} = useAuthContext();
-    const {logout} = useLogout();
-    const [nav,setNav]=useState(false);
-    const handleClick = ()=>{
-      logout();
-    }
-  
-    useEffect(()=>{
-      const handleResize=()=>{
-        setNav(false);
-      }
-      window.addEventListener('resize', handleResize);
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    })
+    const { user } = useAuthContext();
+    const { logout } = useLogout();
+
+    const handleClick = () => {
+        logout();
+    };
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth > 870) {
+                setMenuActive(false); // Close menu if screen size is large
+            }
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
     return (
         <main>
             <div
@@ -52,56 +55,78 @@ const Landing = () => {
                             <h3>Campus Grid</h3>
                         </div>
 
-                        <div className={styles["landing-links"]}>
+                        <div
+                            className={`${styles["landing-links"]} ${
+                                menuActive ? styles["active"] : ""
+                            }`}
+                        >
                             <ul>
                                 <li><a href="#">Events</a></li>
                                 <li><Link to="/addPeople">Add Students</Link></li>
-                                <li><a href="#"></a></li>
                                 {user && (
                                     <li>
-                                        <Link onClick={handleClick} className={styles["landing-btn"]}>Logout</Link>
+                                        <Link
+                                            onClick={handleClick}
+                                            className={styles["landing-btn"]}
+                                        >
+                                            Logout
+                                        </Link>
                                     </li>
                                 )}
-
                                 {!user && (
                                     <li>
-                                        <Link to="/auth" className={styles["landing-btn"]}>Login</Link>
+                                        <Link to="/auth" className={styles["landing-btn"]}>
+                                            Login
+                                        </Link>
                                     </li>
                                 )}
                             </ul>
                         </div>
 
-                        <div className={styles["landing-overlay"]}></div>
+                        <div
+                            className={`${styles["landing-overlay"]} ${
+                                menuActive ? styles["active"] : ""
+                            }`}
+                            onClick={toggleMenu}
+                        ></div>
 
-                        <div className={styles["landing-hamburger-menu"]} onClick={toggleMenu}>
+                        <div
+                            className={styles["landing-hamburger-menu"]}
+                            onClick={toggleMenu}
+                        >
                             <div className={styles["landing-bar"]}></div>
                         </div>
                     </div>
                 </header>
-
                 <div className={styles["landing-showcase-area"]}>
                     <div className={styles["landing-container"]}>
                         <div className={styles["landing-left"]}>
                             <div className={styles["landing-big-title"]}>
                                 <h1>Uniting Campus, Simplifying Success</h1>
                             </div>
-                            {/* <p className={styles["landing-text"]}>
-                            "Campus Grid is your one-stop platform for campus life. Discover a smarter way to manage your academic world with ease!"
-                            </p> */}
                             <div className={styles["landing-cta"]}>
-                                <a href="/auth" className={styles["landing-btn"]}>Get started</a>
+                                <a href="/auth" className={styles["landing-btn"]}>
+                                    Get started
+                                </a>
                             </div>
                         </div>
 
                         <div className={styles["landing-right"]}>
-                            <img src={rec} alt="rec" className={styles["landing-rec"]} />
+                            <img
+                                src={rec}
+                                alt="rec"
+                                className={styles["landing-rec"]}
+                            />
                         </div>
                     </div>
                 </div>
 
                 <div className={styles["landing-bottom-area"]}>
                     <div className={styles["landing-container"]}>
-                        <button className={styles["landing-toggle-btn"]} onClick={toggleDarkMode}>
+                        <button
+                            className={styles["landing-toggle-btn"]}
+                            onClick={toggleDarkMode}
+                        >
                             <i className="far fa-moon"></i>
                             <i className="far fa-sun"></i>
                         </button>

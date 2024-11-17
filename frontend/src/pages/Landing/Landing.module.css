@@ -301,6 +301,7 @@ header .landing-container {
         top: 0;
         left: 0;
         max-width: 66%;
+
         width: 100%;
         height: 100%;
         background-color: rgba(255, 255, 255, 0.3);
@@ -452,5 +453,99 @@ header .landing-container {
 
     .landing-showcase-area .landing-btn {
         font-size: 0.8rem;
+    }
+}
+
+/* Same base styles as before with updates to handle `menuActive` state */
+
+.landing-links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    max-width: 66%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: 95;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease-in-out;
+    backdrop-filter: blur(10px);
+}
+
+.landing-links.active {
+    transform: translateX(0);
+}
+
+.landing-overlay {
+    display: none;
+}
+
+.landing-overlay.active {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+    z-index: 90;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.landing-hamburger-menu {
+    display: flex;
+    cursor: pointer;
+    z-index: 99;
+}
+
+.landing-big-wrapper.landing-active .landing-overlay {
+    display: block;
+}
+
+/* Base styles for the hamburger menu */
+.landing-hamburger-menu {
+    display: flex; /* Visible on smaller screens by default */
+    cursor: pointer;
+    z-index: 99;
+}
+
+/* Hide the hamburger menu on larger screens */
+@media (min-width: 870px) {
+    .landing-hamburger-menu {
+        display: none; /* Hidden on screens wider than 870px */
+    }
+}
+
+/* Navigation links default hidden for mobile, visible for larger screens */
+.landing-links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    max-width: 66%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: 95;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease-in-out;
+    backdrop-filter: blur(10px);
+}
+
+@media (min-width: 870px) {
+    .landing-links {
+        position: static; /* Not fixed */
+        transform: translateX(0);
+        height: auto;
+        display: flex; /* Ensure links are visible */
+        justify-content: flex-end;
+        align-items: center;
+        background-color: transparent;
     }
 }
