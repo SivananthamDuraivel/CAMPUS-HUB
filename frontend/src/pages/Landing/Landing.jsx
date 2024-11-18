@@ -10,7 +10,6 @@ import Features from "../../components/Features/Features"
 const Landing = () => {
     const [darkMode, setDarkMode] = useState(false);
     const [menuActive, setMenuActive] = useState(false);
-
     const toggleDarkMode = () => {
         setDarkMode((prevMode) => !prevMode);
     };
@@ -133,6 +132,7 @@ const Landing = () => {
                     </div>
                 </div>
             </div>
+            <Features/>
         </main>
     );
 };

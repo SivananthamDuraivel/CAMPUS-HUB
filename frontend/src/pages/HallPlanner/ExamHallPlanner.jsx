@@ -3,7 +3,6 @@ import styles from './ExamHallPlanner.module.css';
 import { FaCheck, FaTimes, FaEdit, FaTrash } from 'react-icons/fa';
 
 const ExamHallPlanner = () => {
-
     const [row, setRow] = useState(0);
     const [column, setColumn] = useState(0);
     const [studentsPerBench, setStudentsPerBench]=useState(1);
@@ -92,7 +91,6 @@ const ExamHallPlanner = () => {
 
     const handleDeleteClick = (e, dept) => {
         e.preventDefault();
-
         const newDepartmentDetails = new Map(departmentDetails);
         newDepartmentDetails.delete(dept);
         setDepartmentDetails(newDepartmentDetails);
@@ -264,7 +262,6 @@ const ExamHallPlanner = () => {
 
             allClassrooms.push(currentClassroom);
             currentClassroom = Array.from({ length: row }, () => Array(column).fill(''));
-
             let tempdept = deptA
             let tempCount = countA
             deptA = deptB

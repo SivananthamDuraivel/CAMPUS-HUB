@@ -5,6 +5,7 @@ import LandingPage from "./pages/Landing/Landing"
 import AddPeople from "./pages/AddPeople/AddPeople"
 import Auth from "./pages/Auth/Auth"
 import ExamHallPlanner from './pages/HallPlanner/ExamHallPlanner';
+import Footer from "./components/Footer/Footer";
 function App() {
   const {user} = useAuthContext()
   return(
@@ -20,6 +21,7 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>
+      <Footer />
     </div>
   )
 }
