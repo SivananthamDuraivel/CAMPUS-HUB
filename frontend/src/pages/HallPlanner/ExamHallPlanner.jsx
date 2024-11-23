@@ -72,9 +72,13 @@ const ExamHallPlanner = () => {
     const handleSaveClick = (e, dept) => {
         e.preventDefault();
 
-        const newDepartmentDetails = new Map(departmentDetails);
-        newDepartmentDetails.delete(dept); 
-        newDepartmentDetails.set(editDepartmentName, editCount); 
+        const newDepartmentDetails = new Map(
+            Array.from(departmentDetails).map(([key,value])=>
+                key === dept ? [editDepartmentName,editCount]:[key,value]
+            )
+        );
+        // newDepartmentDetails.delete(dept); 
+        // newDepartmentDetails.set(editDepartmentName, editCount); 
         setDepartmentDetails(newDepartmentDetails);
         rollNumberMap.set(editDepartmentName,editStartingRollNo);
 
@@ -83,7 +87,8 @@ const ExamHallPlanner = () => {
         setEditCount('');
     };
 
-    const handleCancelClick = () => {
+    const handleCancelClick = (e) => {
+        e.preventDefault()
         setEditDepartment(null);
         setEditDepartmentName('');
         setEditCount('');
@@ -128,35 +133,56 @@ const ExamHallPlanner = () => {
         while (i < totalStudents) {
             if(seatingType=='row')
             {
+                console.log(i)
                 for (let r = 0; r < row; r++) {
                     for (let c = 0; c < column; c++) {
                         
-                        if (((countB === undefined || countB === 0 || deptB === null) && countA > 0) || (r % 2 === 0 && countA > 0)) {
-                            let roll = copyRollNumberMap.get(deptA)
-                            copyRollNumberMap.set(deptA, Number(copyRollNumberMap.get(deptA)) + 1);
-                            currentClassroom[r][c] = `${deptA} : ${roll}`;
-                            countA--;
-                            if (countA === 0 && copyDepartmentDetails.size > 0) {
-                                deptA = copyDepartmentDetails.keys().next().value;
-                                countA = copyDepartmentDetails.get(deptA);
-                                copyDepartmentDetails.delete(deptA);
-                            }
-                        } else if (countB > 0) {
-                            let roll = copyRollNumberMap.get(deptB)
-                            copyRollNumberMap.set(deptB, Number(copyRollNumberMap.get(deptB)) + 1);
-                            currentClassroom[r][c] = `${deptB} : ${roll}`;
-                            countB--;
-                            if (countB === 0 && copyDepartmentDetails.size > 0) {
-                                deptB = copyDepartmentDetails.keys().next().value;
-                                countB = copyDepartmentDetails.get(deptB);
-                                copyDepartmentDetails.delete(deptB);
-                            }
-                        }
-                        else {
-                            currentClassroom[r][c] = '-';
-                        }
-                        i++;
+                            if (studentsPerBench === 2 && countA != undefined && countB != undefined && countA > 0 && countB > 0) {
+                                let r1 = copyRollNumberMap.get(deptA)
+                                let r2 = copyRollNumberMap.get(deptB)
+                                copyRollNumberMap.set(deptA, Number(copyRollNumberMap.get(deptA)) + 1);
+                                copyRollNumberMap.set(deptB, Number(copyRollNumberMap.get(deptB)) + 1);
+                                currentClassroom[r][c] = `${deptA} : ${r1}  |  ${deptB} : ${r2}`;
+                                countA--
+                                countB--
 
+                                if (countA === 0 && copyDepartmentDetails.size > 0) {
+                                    deptA = copyDepartmentDetails.keys().next().value;
+                                    countA = copyDepartmentDetails.get(deptA);
+                                    copyDepartmentDetails.delete(deptA);
+                                }
+                                if (countB === 0 && copyDepartmentDetails.size > 0) {
+                                    deptB = copyDepartmentDetails.keys().next().value;
+                                    countB = copyDepartmentDetails.get(deptB);
+                                    copyDepartmentDetails.delete(deptB);
+                                }
+                                i++;
+                            }
+                            else if (((countB === undefined || countB === 0 || deptB === null) && countA > 0) || (r % 2 === 0 && countA > 0)) {
+                                let roll = copyRollNumberMap.get(deptA)
+                                copyRollNumberMap.set(deptA, Number(copyRollNumberMap.get(deptA)) + 1);
+                                currentClassroom[r][c] = `${deptA} : ${roll}`;
+                                countA--;
+                                if (countA === 0 && copyDepartmentDetails.size > 0) {
+                                    deptA = copyDepartmentDetails.keys().next().value;
+                                    countA = copyDepartmentDetails.get(deptA);
+                                    copyDepartmentDetails.delete(deptA);
+                                }
+                            } else if (countB > 0) {
+                                let roll = copyRollNumberMap.get(deptB)
+                                copyRollNumberMap.set(deptB, Number(copyRollNumberMap.get(deptB)) + 1);
+                                currentClassroom[r][c] = `${deptB} : ${roll}`;
+                                countB--;
+                                if (countB === 0 && copyDepartmentDetails.size > 0) {
+                                    deptB = copyDepartmentDetails.keys().next().value;
+                                    countB = copyDepartmentDetails.get(deptB);
+                                    copyDepartmentDetails.delete(deptB);
+                                }
+                            }
+                            else {
+                                currentClassroom[r][c] = '-';
+                            }
+                            i++;
                     }
                 }
             }
@@ -164,8 +190,29 @@ const ExamHallPlanner = () => {
                 console.log("col")
                 for (let c = 0; c < column; c++) {
                     for (let r = 0; r < row; r++) {
-                    
-                        if (((countB === undefined || countB === 0 || deptB === null) && countA > 0) || (c % 2 === 0 && countA > 0)) {
+
+                        if (studentsPerBench === 2 && countA != undefined && countB != undefined && countA > 0 && countB > 0) {
+                            let r1 = copyRollNumberMap.get(deptA)
+                            let r2 = copyRollNumberMap.get(deptB)
+                            copyRollNumberMap.set(deptA, Number(copyRollNumberMap.get(deptA)) + 1);
+                            copyRollNumberMap.set(deptB, Number(copyRollNumberMap.get(deptB)) + 1);
+                            currentClassroom[r][c] = `${deptA} : ${r1}  |  ${deptB} : ${r2}`;
+                            countA--
+                            countB--
+
+                            if (countA === 0 && copyDepartmentDetails.size > 0) {
+                                deptA = copyDepartmentDetails.keys().next().value;
+                                countA = copyDepartmentDetails.get(deptA);
+                                copyDepartmentDetails.delete(deptA);
+                            }
+                            if (countB === 0 && copyDepartmentDetails.size > 0) {
+                                deptB = copyDepartmentDetails.keys().next().value;
+                                countB = copyDepartmentDetails.get(deptB);
+                                copyDepartmentDetails.delete(deptB);
+                            }
+                            i++;
+                        }
+                        else if (((countB === undefined || countB === 0 || deptB === null) && countA > 0) || (c % 2 === 0 && countA > 0)) {
                             let roll = copyRollNumberMap.get(deptA)
                             copyRollNumberMap.set(deptA, Number(copyRollNumberMap.get(deptA)) + 1);
                             currentClassroom[r][c] = `${deptA} : ${roll}`;
@@ -199,7 +246,30 @@ const ExamHallPlanner = () => {
             else if (seatingType === 'row-mix') {
                 for (let r = 0; r < row; r++) {
                     for (let c = 0; c < column; c++) {
-                        if ( ((r + c) % 2 === 0 && countA > 0) || ( (countB === 0 || countB=== undefined )&& countA>0)) {
+                        if (studentsPerBench === 2 && countA != undefined && countB != undefined && countA > 0 && countB > 0) {
+                            let r1 = copyRollNumberMap.get(deptA)
+                            let r2 = copyRollNumberMap.get(deptB)
+                            copyRollNumberMap.set(deptA, Number(copyRollNumberMap.get(deptA)) + 1);
+                            copyRollNumberMap.set(deptB, Number(copyRollNumberMap.get(deptB)) + 1);
+                            if((r+c)%2===0)
+                                currentClassroom[r][c] = `${deptA} : ${r1}  |  ${deptB} : ${r2}`;
+                            else
+                                currentClassroom[r][c] = `${deptB} : ${r2}  |  ${deptA} : ${r1}`;
+                            countA--
+                            countB--
+                            if (countA === 0 && copyDepartmentDetails.size > 0) {
+                                deptA = copyDepartmentDetails.keys().next().value;
+                                countA = copyDepartmentDetails.get(deptA);
+                                copyDepartmentDetails.delete(deptA);
+                            }
+                            if (countB === 0 && copyDepartmentDetails.size > 0) {
+                                deptB = copyDepartmentDetails.keys().next().value;
+                                countB = copyDepartmentDetails.get(deptB);
+                                copyDepartmentDetails.delete(deptB);
+                            }
+                            i++;
+                        }
+                        else if ( ((r + c) % 2 === 0 && countA > 0) || ( (countB === 0 || countB=== undefined )&& countA>0)) {
                         
                             let roll = copyRollNumberMap.get(deptA);
                             copyRollNumberMap.set(deptA, Number(copyRollNumberMap.get(deptA)) + 1);
@@ -351,10 +421,10 @@ const ExamHallPlanner = () => {
                                 <input type="radio" name="seatingStyle" checked={seatingType === 'row'} onChange={() => setSeatingType('row')} /> <p>row</p>
                                 <input type="radio" name="seatingStyle" checked={seatingType === 'column'} onChange={() => setSeatingType('column')} /> <p>column</p>
                             </div>
-                            <div className={styles['examHall-seatingMethod2']}>
+                            {studentsPerBench === 1 ? (<div className={styles['examHall-seatingMethod2']}>
                                 <input type="radio" name="seatingStyle" checked={seatingType === 'row-mix'} onChange={() => setSeatingType('row-mix')} /> <p>row-mix</p>
                                 <input type="radio" name="seatingStyle" checked={seatingType === 'column-mix'} onChange={() => setSeatingType('column-mix')} /> <p>column-mix</p>
-                            </div>
+                            </div>):null}
                         </div>
                     </div>
 
@@ -418,7 +488,7 @@ const ExamHallPlanner = () => {
                                                 {editDepartment === dept ? (
                                                     <div className={styles['examHall-actions']}>
                                                         <button onClick={(e) => handleSaveClick(e, dept)}><FaCheck /></button>
-                                                        <button onClick={handleCancelClick}><FaTimes /></button>
+                                                        <button onClick={(e)=> handleCancelClick(e)}><FaTimes /></button>
                                                     </div>
                                                 ) : (
                                                     <div className={styles['examHall-actions']}>
