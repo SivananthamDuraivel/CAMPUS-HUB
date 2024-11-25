@@ -6,6 +6,8 @@ import AddPeople from "./pages/AddPeople/AddPeople"
 import Auth from "./pages/Auth/Auth"
 import ExamHallPlanner from './pages/HallPlanner/ExamHallPlanner';
 import Footer from "./components/Footer/Footer";
+import Sidebar from "./components/Sidebar/Sidebar";
+
 function App() {
   const {user} = useAuthContext()
   if(user) {
@@ -19,7 +21,7 @@ function App() {
       <BrowserRouter>
         <div className="pages">
           <Routes>
-            <Route path="/auth" element={!user?<Auth/>:<Profile/>}></Route>
+            <Route path="/auth" element={!user?<Auth/>:<Sidebar/>}></Route>
             <Route path="/profile" element={user?<Profile/>:<Navigate to="/"/>}></Route>
             <Route path="/addPeople" element={user?<AddPeople/>:<LandingPage/>}/>
             <Route path="/examHallPlanner" element={user?<ExamHallPlanner/>:<LandingPage/>}></Route>
