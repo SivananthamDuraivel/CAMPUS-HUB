@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import styles from './ExamHallPlanner.module.css';
 import { FaCheck, FaTimes, FaEdit, FaTrash } from 'react-icons/fa';
-
+import Sidebar from "../../components/Sidebar/Sidebar"
 const ExamHallPlanner = () => {
     const [row, setRow] = useState(0);
     const [column, setColumn] = useState(0);
@@ -395,6 +395,8 @@ const ExamHallPlanner = () => {
     }
 
     return (
+        <>
+        <Sidebar />
         <div>
             <center><h2 className={styles['examHall-title']}>EXAM HALL PLAN</h2></center>
             <div className={styles['examHall-requirements']}>
@@ -560,8 +562,8 @@ const ExamHallPlanner = () => {
             </div>
 
         </div>
-        
-    );
+        </>
+    )
 };
 
 export default ExamHallPlanner;

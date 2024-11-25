@@ -35,17 +35,14 @@ const register = async(req,res)=>{
 }
 
 const addTeacher = async (req, res) => {
-  const { email, name, password, collegeName } = req.body;
+  const { email, name, password} = req.body;
   try {
     const admin = await User.findById(req.user); 
+    console.log(admin)
     if (admin.role !== "admin") {
       return res.status(403).json({ error: "You are not authorized to add teachers" });
     }
-    let college = await College.findOne({ name: collegeName });
-    if (!college) {
-      return res.status(404).json({ error: "College not found" });
-    }
-
+    let college = await College.findOne({_id:admin.college});
     const user = await User.register(email, name, password, college._id, "teacher");
     const token = createToken(user._id);
     const message = `
@@ -77,18 +74,14 @@ const addTeacher = async (req, res) => {
 }
 
 const addStudent = async (req, res) => {
-  const { email, name, password, collegeName } = req.body;
+  const { email, name, password} = req.body;
   try {
-    const admin = await User.findById(req.user);
+    const admin = await User.findById(req.user); 
+    console.log(admin)
     if (admin.role !== "admin") {
-      return res.status(403).json({ error: "You are not authorized to add students" });
+      return res.status(403).json({ error: "You are not authorized to add teachers" });
     }
-
-    let college = await College.findOne({ name: collegeName });
-    if (!college) {
-      return res.status(404).json({ error: "College not found" });
-    }
-
+    let college = await College.findOne({_id:admin.college});
     const user = await User.register(email, name, password, college._id, "student");
     const token = createToken(user._id);
     const message = `

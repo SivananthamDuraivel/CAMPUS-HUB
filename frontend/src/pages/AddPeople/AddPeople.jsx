@@ -1,22 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {useAuthContext} from "../../hooks/useAuthContext"
+import { useAuthContext } from "../../hooks/useAuthContext";
 import styles from "./AddPeople.module.css";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import { useLocation } from "react-router-dom";
+
 const AddUser = () => {
-  const {user} = useAuthContext();
-  const [formType, setFormType] = useState('student'); 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const query = queryParams.get("query");
+  const { user } = useAuthContext();
+  const [formType, setFormType] = useState(query);
+
+  useEffect(() => {
+    setFormType(query);
+  }, [query]);  
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [collegeName, setCollegeName] = useState('')
   const [message, setMessage] = useState('');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
       name,
       email,
-      password,
-      collegeName
+      password
     };
 
     try {
@@ -28,10 +38,10 @@ const AddUser = () => {
       });
 
       setMessage(response.data.message);
+      alert(formType+" added")
       setName('');
       setEmail('');
       setPassword('');
-      setCollegeName('');
     } catch (error) {
       console.error("Error adding user:", error);
       setMessage("There was an error adding the user.");
@@ -39,23 +49,25 @@ const AddUser = () => {
   };
 
   return (
-    <div className={styles["container"]}>
-      <h2>{formType === 'student' ? 'Add Student' : 'Add Teacher'}</h2>
+    <>
+      <Sidebar />
+      <div className={styles["container"]}>
+        <h2>{formType === 'student' ? 'Add Student' : 'Add Teacher'}</h2>
         <form onSubmit={handleSubmit} className={styles["form"]}>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required 
-              placeholder = "Name"
-            />
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              required
-            />
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required 
+            placeholder="Name"
+          />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            required
+          />
           <input
             type="password"
             value={password}
@@ -63,25 +75,15 @@ const AddUser = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <input
-            type="text"
-            value={collegeName}
-            placeholder="College"
-            onChange={(e) => setCollegeName(e.target.value)}
-            required
-          />
         
-        <button type="submit">
-          Add {formType === 'student' ? 'Student' : 'Teacher'}
-        </button>
-      </form>
+          <button type="submit">
+            Add {formType === 'student' ? 'Student' : 'Teacher'}
+          </button>
+        </form>
 
-      <button onClick={() => setFormType(formType === 'student' ? 'teacher' : 'student')}>
-        Switch to {formType === 'student' ? 'Add Teacher' : 'Add Student'}
-      </button>
-
-      {message && <p>{message}</p>}
-    </div>
+        {message && <p>{message}</p>}
+      </div>
+    </>
   );
 };
 

@@ -57,7 +57,9 @@ userSchema.statics.register = async function(email,name,password,id,role="admin"
 
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password,salt);
-  const user = this.create({email,name,password:hash,role,college: id,canCreateEvent:true});
+  let canCreateEvent = false;
+  if(role=="admin") canCreateEvent = true
+  const user = this.create({email,name,password:hash,role,college: id,canCreateEvent});
   return user
 }
 userSchema.statics.login = async function(email,password){

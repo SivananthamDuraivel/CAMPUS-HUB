@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  text-decoration: none;
+}
+
+.timetable {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  /* background-color: #E48586; */
+}
+
+table {
+  border: 4px solid #E48586;
+  border-collapse: collapse;
+  width: 93vw;
+  margin-top: 12px;
+  background-color: #FDE5EC;
+  transform: all 5s linear;
+  box-shadow: 0 5px 10px #000;
+}
+
+table:hover {
+  transform: scale(1.02);
+}
+
+th,tr,td {
+  border: 2px solid #E48586;
+  padding: 5px;
+  text-align: center;
+  color: #180667;
+}
+
+a{
+  color:#180667;
+}
+
+h1 {
+  color: #180667;
+}

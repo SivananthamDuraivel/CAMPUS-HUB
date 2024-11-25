@@ -12,22 +12,37 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+  width: 300px;
+  background-color: var(--mainColor);
 }
 
 .container h2 {
   margin: 2rem;
+  text-transform: uppercase;
+  color:#111c58;
+  letter-spacing: 1px;
 }
 
 .container button {
   padding: 5px;
   border: none;
   outline: none;
-  background-color: black;
+  background-color: #111c58;
   color: white;
   margin-top: 20px;
+  width: 70%;
+  padding: 8px;
+  border-radius: 5px;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
 }
 
 .container input {
   margin: 10px;
+  border: 2px solid #111c58;
+  padding: 5px;
+  border-radius: 5px;
+  width: 100%;
 }

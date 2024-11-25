@@ -5,6 +5,7 @@ import LandingPage from "./pages/Landing/Landing"
 import AddPeople from "./pages/AddPeople/AddPeople"
 import Auth from "./pages/Auth/Auth"
 import ExamHallPlanner from './pages/HallPlanner/ExamHallPlanner';
+import TimeTable from './pages/TimeTable/TimeTable'
 import Footer from "./components/Footer/Footer";
 import Sidebar from "./components/Sidebar/Sidebar";
 
@@ -25,6 +26,7 @@ function App() {
             <Route path="/profile" element={user?<Profile/>:<Navigate to="/"/>}></Route>
             <Route path="/addPeople" element={user?<AddPeople/>:<LandingPage/>}/>
             <Route path="/examHallPlanner" element={user?<ExamHallPlanner/>:<LandingPage/>}></Route>
+            <Route path="/timetable" element={user?<TimeTable/>:<LandingPage/>}></Route>
             <Route path="/" element={<LandingPage/>}></Route>
           </Routes>
         </div>
