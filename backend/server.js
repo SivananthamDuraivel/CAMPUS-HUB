@@ -4,7 +4,6 @@ const auth = require("./routes/authRoute");
 const userRoute = require("./routes/userRoutes");
 const {mongoose} = require("mongoose");
 const cors = require("cors")
-// const path = require("path");
 const app = express()
 
 app.use(express.json())
@@ -14,13 +13,6 @@ app.use(cors({
 
 app.use("/api/auth",auth);
 app.use("/api/user",userRoute)
-
-// //serving the frontend
-
-// app.use(express.static(path.join(__dirname,'./frontend/build')))
-// app.get("*",function(req,res){
-//   res.sendFile(path.join(__dirname,"./frontend/public/index.html"))
-// })
 
 app.get("/",(req,res)=>{
   res.json("hello")

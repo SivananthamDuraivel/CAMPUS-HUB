@@ -10,10 +10,9 @@ const login = async (req,res)=>{
   try {
     const user = await User.login(email,password);
     const token = createToken(user._id);
-    res.status(200).json({email,token});
+    res.status(200).json({email,token,role:user.role});
   }
-  catch(error)
-  {
+  catch(error){
     res.status(404).json({error:error.message});
   }
 }
@@ -28,7 +27,7 @@ const register = async(req,res)=>{
     }
     const user = await User.register(email,name,password,college._id);
     const token = createToken(user._id);
-    res.status(200).json({email,token});
+    res.status(200).json({email,token,role:"admin"});
   }
   catch(error) {
     res.status(400).json({error:error.message});

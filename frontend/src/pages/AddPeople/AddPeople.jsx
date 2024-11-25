@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import {useAuthContext} from "../../hooks/useAuthContext"
-
+import styles from "./AddPeople.module.css";
 const AddUser = () => {
   const {user} = useAuthContext();
   const [formType, setFormType] = useState('student'); 
@@ -39,45 +39,37 @@ const AddUser = () => {
   };
 
   return (
-    <div>
+    <div className={styles["container"]}>
       <h2>{formType === 'student' ? 'Add Student' : 'Add Teacher'}</h2>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Name:
+        <form onSubmit={handleSubmit} className={styles["form"]}>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
+              required 
+              placeholder = "Name"
             />
-          </label>
-          <label>
-            Email:
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
               required
             />
-          </label>
-        <label>
-          Password:
           <input
             type="password"
             value={password}
+            placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        <label>
-          College Name:
           <input
             type="text"
             value={collegeName}
+            placeholder="College"
             onChange={(e) => setCollegeName(e.target.value)}
             required
           />
-        </label>
         
         <button type="submit">
           Add {formType === 'student' ? 'Student' : 'Teacher'}

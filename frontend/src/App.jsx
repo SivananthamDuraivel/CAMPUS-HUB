@@ -8,20 +8,26 @@ import ExamHallPlanner from './pages/HallPlanner/ExamHallPlanner';
 import Footer from "./components/Footer/Footer";
 function App() {
   const {user} = useAuthContext()
+  if(user) {
+    console.log("User Exists")
+  }
+  else {
+    console.log("User does not exists")
+  }
   return(
     <div className="App">
       <BrowserRouter>
         <div className="pages">
           <Routes>
-            <Route path="/" element={<LandingPage/>}></Route>
             <Route path="/auth" element={!user?<Auth/>:<Profile/>}></Route>
             <Route path="/profile" element={user?<Profile/>:<Navigate to="/"/>}></Route>
-            <Route path="/addPeople" element={user?<AddPeople/>:<Navigate to="/"/>}/>
-            <Route path="/examHallPlanner" element={<ExamHallPlanner />}></Route>
+            <Route path="/addPeople" element={user?<AddPeople/>:<LandingPage/>}/>
+            <Route path="/examHallPlanner" element={user?<ExamHallPlanner/>:<LandingPage/>}></Route>
+            <Route path="/" element={<LandingPage/>}></Route>
           </Routes>
         </div>
+        <Footer />
       </BrowserRouter>
-      <Footer />
     </div>
   )
 }

@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form {
+  /* border: 2px solid black; */
+  padding: 10px 20px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+}
+
+.container h2 {
+  margin: 2rem;
+}
+
+.container button {
+  padding: 5px;
+  border: none;
+  outline: none;
+  background-color: black;
+  color: white;
+  margin-top: 20px;
+}
+
+.container input {
+  margin: 10px;
+}
