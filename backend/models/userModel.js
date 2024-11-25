@@ -25,6 +25,10 @@ const userSchema = new Schema({
     enum: ["admin" , "teacher" , "student"],
     required: true
   },
+  canCreateEvent: {
+    type: Boolean,
+    default: false
+  },
   college: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'College',
@@ -53,7 +57,7 @@ userSchema.statics.register = async function(email,name,password,id,role="admin"
 
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password,salt);
-  const user = this.create({email,name,password:hash,role,college: id});
+  const user = this.create({email,name,password:hash,role,college: id,canCreateEvent:true});
   return user
 }
 userSchema.statics.login = async function(email,password){
