@@ -1,5 +1,5 @@
 import { AiFillHome } from 'react-icons/ai';
-import { IoIosPaper, IoMdPeople, IoMdHelpCircle } from 'react-icons/io';
+import { IoIosPaper, IoMdPeople, IoMdHelpCircle,IoMdAddCircle } from 'react-icons/io';
 import { FaCartPlus, FaEnvelopeOpenText } from 'react-icons/fa';
 import { FaCalendarAlt } from 'react-icons/fa'; // Timetable
 import { BiTask } from 'react-icons/bi'; // Exam Planner
@@ -26,6 +26,12 @@ export const SidebarData = {
       cName: 'nav-text',
     },
     {
+      title: 'Create Event',
+      path: '/createEvent',
+      icon: IoMdAddCircle, 
+      cName: 'nav-text',
+    },
+    {
       title: 'ExamHall Planner',
       path: '/examHallPlanner',
       icon: BiTask,
@@ -47,7 +53,7 @@ export const SidebarData = {
   teacher: [
     {
       title: 'Create Events',
-      path: '/create-events',
+      path: '/createEvent',
       icon: MdEvent,
       cName: 'nav-text',
     },
