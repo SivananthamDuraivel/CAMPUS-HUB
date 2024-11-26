@@ -4,7 +4,10 @@ import logo from "./assets/log.svg";
 import register from "./assets/register.svg";
 import { useLogin } from "../../hooks/useLogin";
 import { useSignUp } from "../../hooks/useSignup";
+import { useNavigate } from 'react-router-dom';
+
 const Auth = () => {
+    const navigate = useNavigate();
     const {signup,isRloading,rerror} = useSignUp();
     const [remail,setRemail] = useState('');
     const [name,setname] = useState('');
@@ -22,7 +25,7 @@ const Auth = () => {
         {
           setPassError(null);
           await signup(remail,name,rpassword,cpassword,college);
-          console.log(rerror)
+          navigate('/about'); 
         }
       }
     const [email, setEmail] = useState('');
@@ -31,6 +34,7 @@ const Auth = () => {
     const handleClick = async (e) => {
         e.preventDefault();
         await login(email, password);
+        navigate('/admin'); 
     };
     const [signUpMode, setSignUpMode] = useState(false);
 

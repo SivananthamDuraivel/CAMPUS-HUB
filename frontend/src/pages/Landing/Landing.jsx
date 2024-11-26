@@ -101,7 +101,7 @@ const Landing = () => {
                     <div className={styles["landing-container"]}>
                         <div className={styles["landing-left"]}>
                             <div className={styles["landing-big-title"]}>
-                                <h1>Uniting Campus, Simplifying Success</h1>
+                                <h2>Uniting Campus,<br/> Simplifying Success</h2>
                             </div>
                             <div className={styles["landing-cta"]}>
                                 <a href="/auth" className={styles["landing-btn"]}>

@@ -7,6 +7,8 @@ import Auth from "./pages/Auth/Auth"
 import ExamHallPlanner from './pages/HallPlanner/ExamHallPlanner';
 import TimeTable from './pages/TimeTable/TimeTable'
 import CreateEvent from './pages/CreateEvent/CreateEvent'
+import Admin from './pages/AdminLanding/AdminLanding'
+import ViewUsers from './pages/ViewUsers/ViewUsers'
 import Footer from "./components/Footer/Footer";
 import Sidebar from "./components/Sidebar/Sidebar";
 
@@ -29,6 +31,8 @@ function App() {
             <Route path="/examHallPlanner" element={user?<ExamHallPlanner/>:<LandingPage/>}></Route>
             <Route path="/createEvent" element={user?<CreateEvent/>:<LandingPage/>}></Route>
             <Route path="/timetable" element={user?<TimeTable/>:<LandingPage/>}></Route>
+            <Route path="/viewUsers" element={user?<ViewUsers/>:<LandingPage/>}></Route>
+            <Route path="/admin" element={user?<Admin/>:<LandingPage/>}></Route>
             <Route path="/" element={<LandingPage/>}></Route>
           </Routes>
         </div>
