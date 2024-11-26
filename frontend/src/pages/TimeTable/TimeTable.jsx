@@ -1,6 +1,9 @@
 import "./TimeTable.css"
+import Sidebar from "../../components/Sidebar/Sidebar"
 const TimeTable = () => {
   return ( 
+    <>
+    <Sidebar />
     <div className="timetable">
       <h1>TIME TABLE</h1>
   <table>
@@ -166,6 +169,7 @@ const TimeTable = () => {
     </tr>
   </table>
     </div>
+    </>
    );
 }
  
