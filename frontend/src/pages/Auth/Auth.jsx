@@ -37,7 +37,6 @@ const Auth = () => {
         navigate('/admin'); 
     };
     const [signUpMode, setSignUpMode] = useState(false);
-
     const handleSignInClick = () => {
         setSignUpMode(false);
     };

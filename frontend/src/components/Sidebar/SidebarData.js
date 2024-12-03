@@ -1,9 +1,9 @@
 import { AiFillHome } from 'react-icons/ai';
 import { IoIosPaper, IoMdPeople, IoMdHelpCircle,IoMdAddCircle } from 'react-icons/io';
 import { FaCartPlus, FaEnvelopeOpenText } from 'react-icons/fa';
-import { FaCalendarAlt } from 'react-icons/fa'; // Timetable
-import { BiTask } from 'react-icons/bi'; // Exam Planner
-import { MdEvent } from 'react-icons/md'; // Events
+import { FaCalendarAlt } from 'react-icons/fa';
+import { BiTask } from 'react-icons/bi';
+import { MdEvent } from 'react-icons/md'; 
 
 export const SidebarData = {
   admin: [
@@ -39,7 +39,7 @@ export const SidebarData = {
     },
     {
       title: 'View Students and Teachers',
-      path: '/view-students-teachers',
+      path: '/viewUsers',
       icon: IoIosPaper,
       cName: 'nav-text',
     },
