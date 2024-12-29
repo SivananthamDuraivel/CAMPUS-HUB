@@ -14,7 +14,6 @@ function Navbar() {
 
   const showSidebar = () => setSidebar(!sidebar);
 
-  // Get the Sidebar items based on the role
   const items = SidebarData[role] || [];
 
   return (
