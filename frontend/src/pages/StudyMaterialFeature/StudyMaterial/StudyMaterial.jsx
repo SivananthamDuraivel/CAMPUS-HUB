@@ -2,9 +2,17 @@ import React, { useState, useEffect } from "react";
 import "./StudyMaterial.css";
 import axios from "axios";
 import UploadMaterial from "../uploadMaterial/UploadMaterial";
+import { useAuthContext } from "../../../hooks/useAuthContext";
+import { FiDownload } from "react-icons/fi";
 
 const StudyMaterial = () => {
+
+    const { user } = useAuthContext();
+    console.log(user)
+
     const [upload, setUpload] = useState(false);
+    const [cancel, setCancel] = useState(false);
+    const [displayUpload, setDisplayUpload] = useState(true)
     const [loading, setLoading] = useState({
         departments: false,
         subjects: false,
@@ -79,39 +87,52 @@ const StudyMaterial = () => {
         }
     };
 
+    useEffect(() => {
+        if (cancel) {
+            setDisplayUpload(true)
+        }
+    }, [cancel]);
+
+    function convertToRawUrl(githubUrl) {
+        return githubUrl.replace('github.com', 'raw.githubusercontent.com').replace('/blob', '');
+    }
+
     return (
-        <div className="sm-study-material">
-            <h1>Study Materials</h1>
+        <div>
+            <br />
+            <center><h1>Study Materials</h1></center>
             <div className="sm-uploadButton">
-                <button onClick={() => setUpload(!upload)}>Upload Material</button>
-                {upload && (
-                    // <UploadMaterial
-                    //     department={selected.department}
-                    //     subject={selected.subject}
-                    //     onSuccess={handleUploadSuccess}
-                    // />
-                    <UploadMaterial></UploadMaterial>
+                {displayUpload && <button onClick={() => { setUpload(true); setCancel(false);setDisplayUpload(false)}} className="sm-upload">Upload Material</button>}
+                <br />
+                {!cancel && upload && (
+                    <div>
+                        <br />
+                        <UploadMaterial onButtonClick={(value) => setCancel(value)}></UploadMaterial>
+                        <br /><br />
+                    </div>
                 )}
             </div>
-            {error && <p className="sm-error">{error}</p>}
 
+            {error && <p className="sm-error">{error}</p>}
+        <div className="sm-study-material">
             {/* Departments */}
             <div className="sm-list-container">
                 <h3>Departments:</h3>
                 {loading.departments ? (
                     <div className="sm-spinner"></div>
                 ) : (
-                    <div className="sm-scroll-list">
-                        {data.departments.map((dept) => (
-                            <div
-                                key={dept}
-                                className={`sm-list-item ${selected.department === dept ? "active" : ""}`}
-                                onClick={() => handleDepartmentClick(dept)}
-                            >
-                                {dept}
-                            </div>
-                        ))}
-                    </div>
+                    data.departments.length>0 ?
+                                <div className="sm-scroll-list">
+                                    {data.departments.map((dept) => (
+                                        <div
+                                            key={dept}
+                                            className={`sm-list-item ${selected.department === dept ? "active" : ""}`}
+                                            onClick={() => handleDepartmentClick(dept)}
+                                        >
+                                            {dept}
+                                        </div>
+                                    ))}
+                                </div>: <p>No departments were added yet.</p>
                 )}
             </div>
 
@@ -121,25 +142,26 @@ const StudyMaterial = () => {
                     <h3>Subjects:</h3>
                     {loading.subjects ? (
                         <div className="sm-spinner"></div>
-                    ) : (
-                        <div className="sm-scroll-list">
-                            {data.subjects.map((subject) => (
-                                <div
-                                    key={subject}
-                                    className={`sm-list-item ${selected.subject === subject ? "active" : ""}`}
-                                    onClick={() => handleSubjectClick(subject)}
-                                >
+                        ) : (
+                            data.subjects.length > 0 ? 
+                                <div className="sm-scroll-list">
+                                {data.subjects.map((subject) => (
+                                    <div
+                                        key={subject}
+                                        className={`sm-list-item ${selected.subject === subject ? "active" : ""}`}
+                                        onClick={() => handleSubjectClick(subject)}
+                                    >
                                     {subject}
-                                </div>
-                            ))}
-                        </div>
+                                    </div>
+                                ))}
+                                    </div> : <p>"No subjects were added yet."</p>
                     )}
                 </div>
             )}
 
             {/* Study Materials */}
             {selected.subject && (
-                <div className="sm-notes-container">
+                <div className="sm-list-container">
                     <h3>Study Materials:</h3>
                     {loading.materials ? (
                         <div className="sm-spinner"></div>
@@ -155,18 +177,37 @@ const StudyMaterial = () => {
                                         </summary>
                                         <ul className="sm-file-list">
                                             {/* Loop through files under each topic */}
-                                            {topic.files.map((file, fileIndex) => (
-                                                <li key={fileIndex}>
-                                                    <a
-                                                        href={file.url}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="sm-file-link"
-                                                    >
-                                                        {file.name || `File ${fileIndex + 1}`}
-                                                    </a>
-                                                </li>
-                                            ))}
+                                            {topic.files.map((file, fileIndex) => {
+                                                const rawUrl = convertToRawUrl(file.url); // Convert GitHub URL to raw URL
+                                                const viewerUrl = `https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(rawUrl)}`;
+                                                return (
+                                                    <li key={fileIndex} className="sm-file-item">
+                                                        <a
+                                                            href={viewerUrl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="sm-file-link"
+                                                        >
+                                                            {file.name || `File ${fileIndex + 1}`}
+                                                        </a>
+                                                        <button
+                                                            onClick={() => {
+                                                                const link = document.createElement("a");
+                                                                link.href = rawUrl;
+                                                                link.download = file.name || `File-${fileIndex + 1}.pdf`;
+                                                                link.click();
+                                                            }}
+                                                            className="sm-download-btn"
+                                                            title="Download PDF"
+                                                        >
+                                                            <FiDownload />
+                                                        </button>
+                                                    </li>
+                                                );
+                                            })}
+
+
+
                                         </ul>
                                     </details>
                                 </div>
@@ -176,6 +217,7 @@ const StudyMaterial = () => {
                 </div>
             )}
 
+        </div>
         </div>
     );
 };
