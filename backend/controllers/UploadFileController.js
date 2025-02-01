@@ -36,19 +36,16 @@ exports.uploadFile = async (req, res) => {
             // If the file exists, return a message
             return res.status(409).json({
                 message: "File already exists",
-                fileUrl: existingFileResponse.data.html_url, // Provide the existing file URL
+                fileUrl: existingFileResponse.data.html_url,
             });
         } catch (error) {
             if (error.response && error.response.status !== 404) {
-                // If the error is not "file not found," rethrow it
                 throw error;
             }
         }
 
-        // Read the file content and encode it in base64
         const fileContent = fs.readFileSync(path.join(__dirname, '../uploads', file.filename), { encoding: 'base64' });
 
-        // Upload the file to GitHub
         const githubResponse = await axios.put(
             githubUrl,
             {
@@ -68,31 +65,38 @@ exports.uploadFile = async (req, res) => {
         console.log("Uploaded File URL:", uploadedFileUrl);
 
         // Update the database with the uploaded file URL
-        let studyMaterial = await StudyMaterial.findOne({ department, subject });
-        const newMaterial = { name: fileName, url: uploadedFileUrl };
+        const newFile = { name: fileName, url: uploadedFileUrl };
 
+        let studyMaterial = await StudyMaterial.findOne({ department });
         if (studyMaterial) {
-            let existingTopic = studyMaterial.materials.find((mat) => mat.topicName === topic);
-
-            if (existingTopic) {
-                if (!existingTopic.materials) {
-                    existingTopic.materials = [];
+            const subjectItem = studyMaterial.subjectList.find(item => item.subject === subject);
+            if (subjectItem) {
+                const topicItem = subjectItem.materials.find(material => material.topicName === topic);
+                if (topicItem) {
+                    topicItem.files.push(newFile); 
+                } else {
+                    subjectItem.materials.push({ topicName: topic, files: [newFile] }); // Add a new topic
                 }
-                existingTopic.materials.push(newMaterial);
             } else {
-                studyMaterial.materials.push({ topicName: topic, materials: [newMaterial] });
+                studyMaterial.subjectList.push({
+                    subject,
+                    materials: [{ topicName: topic, files: [newFile] }], 
+                });
             }
+            await studyMaterial.save();
         } else {
-            studyMaterial = new StudyMaterial({
+            const newStudyMaterial = new StudyMaterial({
                 department,
-                subject,
-                materials: [{ topicName: topic, materials: [newMaterial] }],
+                subjectList: [
+                    {
+                        subject,
+                        materials: [{ topicName: topic, files: [newFile] }],
+                    },
+                ],
             });
+            await newStudyMaterial.save();
         }
-
-
-        await studyMaterial.save();
-
+        console.log("uploaded and db updated")
         res.status(201).json({
             message: "File uploaded and database updated successfully",
             githubUrl: uploadedFileUrl,
@@ -102,4 +106,3 @@ exports.uploadFile = async (req, res) => {
         res.status(500).json({ error: "An error occurred while processing your request." });
     }
 };
-

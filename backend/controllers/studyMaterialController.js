@@ -10,83 +10,108 @@ const getDepartments = async (req, res) => {
     }
 };
 
-// Fetch distinct subjects for a department
 const getSubjects = async (req, res) => {
     const { department } = req.query;
     try {
-        const subjects = await StudyMaterial.find({ department }).distinct("subject");
-        res.status(200).json(subjects);
+        const result = await StudyMaterial.findOne({ department: department },{ "subjectList.subject": 1, _id: 0 });
+
+        if (result) {
+            const subjects = result.subjectList.map(item => item.subject);
+            res.status(200).json(subjects); 
+        } else {
+            console.log("No subjects found for the specified department.");
+            res.status(404).json({ message: "No subjects found for the specified department." });
+        }
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error("Error fetching subjects:", err);
+        res.status(500).json({ error: err.message }); // Send error as response
     }
 };
+
 
 // Fetch distinct topics for a subject in a department
 const getTopics = async (req, res) => {
+    console.log("Entering topics");
     const { department, subject } = req.query;
-    console.log("entering topics : ",department,subject)
     try {
-        const topics = await StudyMaterial.findOne({ department, subject }).distinct("materials.topicName");
-        console.log(topics)
-        res.status(200).json(topics);
+        const result = await StudyMaterial.findOne({ department, "subjectList.subject": subject },{ "subjectList.$": 1 });
+        if (result && result.subjectList.length > 0) {
+            const topics = result.subjectList[0].materials.map(material => material.topicName);
+            console.log("Topics:", topics);
+            res.status(200).json(topics);
+        } else {
+            res.status(404).json({ message: "No topics found for the specified department and subject." });
+        }
     } catch (err) {
+        console.error("Error fetching topics:", err);
         res.status(500).json({ error: err.message });
     }
 };
 
-// Fetch materials for a topic within a subject and department
+
+// Fetch materials within a department and subject
 const getStudyMaterials = async (req, res) => {
-    const { department, subject, topic } = req.query;
+    const { department, subject } = req.query;
     try {
-        const studyMaterial = await StudyMaterial.findOne({ department, subject });
-        if (studyMaterial) {
-            const topicMaterials = studyMaterial.materials.filter((material) => material.topic === topic);
-            res.status(200).json(topicMaterials);
+        const result = await StudyMaterial.findOne({ department: department, "subjectList.subject": subject },{"subjectList.$": 1, _id: 0});
+        if (result && result.subjectList.length > 0) {
+            const topics = result.subjectList[0].materials.map(material => ({
+                topicName: material.topicName,
+                files: material.files.map(file => ({
+                    name: file.name,
+                    url: file.url
+                }))
+            }));
+            res.status(200).json(topics);
         } else {
-            res.status(404).json({ message: "No materials found" });
+            res.status(404).json({ message: "No topics found for the specified department and subject." });
         }
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
 
-// Add materials under a specific topic for a subject in a department
 const addStudyMaterial = async (req, res) => {
     const { department, subject, topic, materials } = req.body;
-    try {
-        let studyMaterial = await StudyMaterial.findOne({ department, subject });
 
+    try {
+        let studyMaterial = await StudyMaterial.findOne({ department });
         if (studyMaterial) {
-            // Check if topic exists, if not create it
-            const topicExists = studyMaterial.materials.some((material) => material.topic === topic);
-            if (topicExists) {
-                // Append materials to the existing topic
-                studyMaterial.materials = studyMaterial.materials.map((material) => {
-                    if (material.topic === topic) {
-                        return { ...material, files: [...material.files, ...materials] };
-                    }
-                    return material;
-                });
+            const subjectItem = studyMaterial.subjectList.find(item => item.subject === subject);
+            if (subjectItem) {
+                const topicItem = subjectItem.materials.find(material => material.topicName === topic);
+                if (topicItem) {
+                    topicItem.files = [...topicItem.files, ...materials];
+                } else {
+                    subjectItem.materials.push({ topicName: topic, files: materials });
+                }
             } else {
-                // Add new topic with materials
-                studyMaterial.materials.push({ topic, files: materials });
+                studyMaterial.subjectList.push({
+                    subject,
+                    materials: [{ topicName: topic, files: materials }]
+                });
             }
             await studyMaterial.save();
+            res.status(200).json(studyMaterial);
         } else {
-            // Create a new document with the department, subject, and topic
-            studyMaterial = new StudyMaterial({
+            const newStudyMaterial = new StudyMaterial({
                 department,
-                subject,
-                materials: [{ topic, files: materials }],
+                subjectList: [
+                    {
+                        subject,
+                        materials: [{ topicName: topic, files: materials }]
+                    }
+                ]
             });
-            await studyMaterial.save();
+            await newStudyMaterial.save();
+            res.status(201).json(newStudyMaterial);
         }
-
-        res.status(201).json(studyMaterial);
     } catch (err) {
+        console.error("Error adding study material:", err);
         res.status(500).json({ error: err.message });
     }
 };
+
 
 module.exports = {
     getDepartments,

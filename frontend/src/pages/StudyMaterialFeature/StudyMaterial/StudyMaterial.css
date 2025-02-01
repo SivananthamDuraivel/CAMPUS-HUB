@@ -18,11 +18,15 @@
 .sm-study-material {
     font-family: Arial, sans-serif;
     padding: 20px;
-    max-width: 900px;
+    max-width: 60%;
     margin: 0 auto;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 3vh;
 }
 
 .sm-study-material h1 {
@@ -41,6 +45,8 @@
 
 .sm-list-container {
     margin-bottom: 20px;
+    max-width: 45vw;
+    min-width: 40vw; 
 }
 
 .sm-list-container h3 {
@@ -50,12 +56,13 @@
 }
 
 .sm-scroll-list {
-    max-height: 150px;
+    max-height: 28vh;
     overflow-y: auto;
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: #fff;
     padding: 10px;
+    max-width: 40vw;
 }
 
 .sm-scroll-list::-webkit-scrollbar {
@@ -186,6 +193,46 @@
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: auto;
+}
+
+.sm-upload{
+    float: right;
+    font-size: larger;
+}
+
+.sm-file-item {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sm-file-link {
+    text-decoration: none;
+    color: #007bff;
+    margin-right: 10px;
+    font-weight: 500;
+    flex: 1;
+}
+
+.sm-file-link:hover {
+    text-decoration: underline;
+}
+
+.sm-download-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.sm-download-btn:hover {
+    color: #0056b3;
 }
 
 @keyframes spin {

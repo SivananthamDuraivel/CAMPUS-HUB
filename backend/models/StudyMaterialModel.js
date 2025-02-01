@@ -1,15 +1,19 @@
 const mongoose = require("mongoose");
 
 const studyMaterialSchema = new mongoose.Schema({
-    department: { type: String, required: true },
-    subject: { type: String, required: true },
-    materials: [
+    department: { type: String, unique: true },
+    subjectList: [
         {
-            topicName: { type: String, required: true },
-            files: [
+            subject: { type: String, unique: true },
+            materials: [
                 {
-                    name: { type: String, required: true },
-                    url: { type: String, required: true },
+                    topicName: { type: String, unique: true},
+                    files: [
+                        {
+                            name: { type: String },
+                            url: { type: String, required: true },
+                        }
+                    ]
                 }
             ]
         }

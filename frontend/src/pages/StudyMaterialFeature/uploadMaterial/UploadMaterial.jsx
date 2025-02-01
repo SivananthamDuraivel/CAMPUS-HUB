@@ -3,13 +3,20 @@ import axios from "axios";
 import Select from "react-select";
 import "./UploadMaterial.css";
 
-const UploadMaterial = () => {
+// Utility function to append "Add New" option
+const appendAddNewOption = (options, label, value) => [
+    ...options,
+    { label: `Add New ${label}`, value: `add-new-${value}` },
+];
+
+const UploadMaterial = ({ onButtonClick }) => {
     const [formData, setFormData] = useState({
         department: null,
         subject: null,
         topic: null,
         name: "",
     });
+
     const [departments, setDepartments] = useState([]);
     const [subjects, setSubjects] = useState([]);
     const [topics, setTopics] = useState([]);
@@ -21,33 +28,51 @@ const UploadMaterial = () => {
     const [isAddingTopic, setIsAddingTopic] = useState(false);
     const [file, setFile] = useState(null);
     const [message, setMessage] = useState(null);
+    const [cancel, setCancel] = useState(null)
 
     // Fetch departments on component load
     useEffect(() => {
         const fetchDepartments = async () => {
-            try {
-                const response = await axios.get("http://localhost:5000/api/studyMaterial/departments");
-                const deptOptions = response.data.map((dept) => ({ label: dept, value: dept }));
-                setDepartments([...deptOptions, { label: "Add New Department", value: "add-new-department" }]);
-            } catch (err) {
-                console.error(err);
-            }
+            fetchDepartmentsHelper()
         };
         fetchDepartments();
     }, []);
 
+    const fetchDepartmentsHelper = async () => {
+        try {
+            const response = await axios.get("http://localhost:5000/api/studyMaterial/departments");
+            const deptOptions = response.data.map((dept) => ({ label: dept, value: dept }));
+            setDepartments(appendAddNewOption(deptOptions, "Department", "department"));
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     const handleDepartmentChange = async (selectedDept) => {
+        if (!selectedDept) {
+            setFormData({ ...formData, department: null, subject: null, topic: null });
+            setSubjects([]); // Clear subjects
+            setTopics([]); // Clear topics
+            setIsAddingDept(false);
+            setIsAddingSubject(false);
+            setIsAddingTopic(false);
+            return;
+        }
         if (selectedDept.value === "add-new-department") {
+            setFormData({ ...formData, department: selectedDept, subject: null, topic: null });
             setIsAddingDept(true);
         } else {
             setFormData({ ...formData, department: selectedDept, subject: null, topic: null });
             setIsAddingDept(false);
+            setIsAddingSubject(false);
+            setIsAddingTopic(false);
+
             try {
                 const response = await axios.get(
                     `http://localhost:5000/api/studyMaterial/subjects?department=${selectedDept.value}`
                 );
                 const subjectOptions = response.data.map((subject) => ({ label: subject, value: subject }));
-                setSubjects([...subjectOptions, { label: "Add New Subject", value: "add-new-subject" }]);
+                setSubjects(appendAddNewOption(subjectOptions, "Subject", "subject"));
             } catch (err) {
                 console.error(err);
             }
@@ -55,7 +80,15 @@ const UploadMaterial = () => {
     };
 
     const handleSubjectChange = async (selectedSubject) => {
+        if (!selectedSubject) {
+            setFormData({ ...formData, subject: null, topic: null });
+            setTopics([]); // Clear topics
+            setIsAddingSubject(false);
+            setIsAddingTopic(false);
+            return;
+        }
         if (selectedSubject.value === "add-new-subject") {
+            setFormData({ ...formData, subject: selectedSubject, topic: null });
             setIsAddingSubject(true);
         } else {
             setFormData({ ...formData, subject: selectedSubject, topic: null });
@@ -65,26 +98,23 @@ const UploadMaterial = () => {
                 const response = await axios.get(
                     `http://localhost:5000/api/studyMaterial/topics?department=${formData.department.value}&subject=${selectedSubject.value}`
                 );
-
-                console.log("Topics Response:", response.data); 
-
-                if (response.data && Array.isArray(response.data)) {
-                    const topicOptions = response.data.map((topic) => ({ label: topic, value: topic }));
-                    setTopics([...topicOptions, { label: "Add New Topic", value: "add-new-topic" }]);
-                } else {
-                    setTopics([{ label: "Add New Topic", value: "add-new-topic" }]); // Fallback for no topics
-                }
+                const topicOptions = response.data.map((topic) => ({ label: topic, value: topic }));
+                setTopics(appendAddNewOption(topicOptions, "Topic", "topic"));
             } catch (err) {
-                console.error("Error fetching topics:", err);
-                setTopics([{ label: "Add New Topic", value: "add-new-topic" }]);
+                console.error(err);
             }
         }
     };
 
-
     const handleTopicChange = (selectedTopic) => {
+        if (!selectedTopic) {
+            setFormData({ ...formData, topic: null });
+            setIsAddingTopic(false);
+            return;
+        }
         if (selectedTopic.value === "add-new-topic") {
             setIsAddingTopic(true);
+            setFormData({ ...formData, topic: selectedTopic });
         } else {
             setFormData({ ...formData, topic: selectedTopic });
             setIsAddingTopic(false);
@@ -92,24 +122,59 @@ const UploadMaterial = () => {
     };
 
     const handleAddNewDept = () => {
+        if(newDept===null || newDept.length <=2)
+        {
+            window.alert("Enter proper department name with atleast 2 characters");
+            return;
+        }
         const newDeptOption = { label: newDept, value: newDept };
-        setDepartments([...departments.filter((dept) => dept.value !== "add-new-department"), newDeptOption]);
-        setFormData({ ...formData, department: newDeptOption });
-        setNewDept("");
-        setIsAddingDept(false);
+        const updatedDepartments = appendAddNewOption(
+            departments.filter((dept) => dept.value !== "add-new-department"),
+            "Department",
+            "department"
+        );
+        setDepartments(updatedDepartments);
+        setFormData({
+            department: newDeptOption,
+            subject: null, 
+            topic: null,  
+        });
+
+        setNewDept("");           
+        setIsAddingDept(false);   
+        setIsAddingSubject(true); 
     };
+
 
     const handleAddNewSubject = () => {
-        const newSubjectOption = { label: newSubject, value: newSubject };
-        setSubjects([...subjects.filter((subject) => subject.value !== "add-new-subject"), newSubjectOption]);
-        setFormData({ ...formData, subject: newSubjectOption });
+        if (newSubject === null || newSubject.length <= 2) {
+            window.alert("Enter proper subject name with atleast 2 characters");
+            return;
+        }
+        const newSubjectOption = { label: newSubject, value: newSubject }; 
+        const updatedSubjects = appendAddNewOption(
+            subjects.filter((subject) => subject.value !== "add-new-subject"),
+            "Subject",
+            "subject"
+        );
+        updatedSubjects.push(newSubjectOption);
+        setSubjects(updatedSubjects);
+        const updatedFormData = { ...formData, subject: newSubjectOption };
+        setFormData(updatedFormData);
+
         setNewSubject("");
         setIsAddingSubject(false);
+        setIsAddingTopic(true);
     };
 
+
     const handleAddNewTopic = () => {
+        if (newTopic === null || newTopic.length < 2) {
+            window.alert("Enter proper topic name with atleast 2 characters");
+            return;
+        }
         const newTopicOption = { label: newTopic, value: newTopic };
-        setTopics([...topics.filter((topic) => topic.value !== "add-new-topic"), newTopicOption]);
+        setTopics(appendAddNewOption(topics.filter((topic) => topic.value !== "add-new-topic"), "Topic", "topic"));
         setFormData({ ...formData, topic: newTopicOption });
         setNewTopic("");
         setIsAddingTopic(false);
@@ -119,13 +184,11 @@ const UploadMaterial = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!file || !formData.department || !formData.subject || !formData.topic || !formData.name) {
             setMessage("Please fill in all fields and select a file.");
             return;
         }
 
-        // Create FormData object
         const formDataObj = new FormData();
         formDataObj.append("department", formData.department.value);
         formDataObj.append("subject", formData.subject.value);
@@ -134,15 +197,18 @@ const UploadMaterial = () => {
         formDataObj.append("file", file);
 
         try {
-            const response = await axios.post("http://localhost:5000/api/upload/upload", formDataObj, {
+            const fileUploadResponse = await axios.post("http://localhost:5000/api/upload/upload", formDataObj, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            setMessage(`File uploaded successfully`);
+            console.log("resp : ",fileUploadResponse)
+            onButtonClick(true)
+            window.alert(fileUploadResponse.data.message)
+            fetchDepartmentsHelper()
         } catch (error) {
             console.error(error);
-            setMessage("File upload failed.");
+            setMessage(fileUploadResponse.message);
         }
     };
 
@@ -163,11 +229,18 @@ const UploadMaterial = () => {
                 </div>
                 {isAddingDept && (
                     <div className="sm-add-new">
-                        <input type="text" value={newDept} onChange={(e) => setNewDept(e.target.value)} placeholder="New Department Name" />
-                        <button type="button" onClick={handleAddNewDept}>Add Department</button>
+                        <input
+                            type="text"
+                            value={newDept}
+                            onChange={(e) => setNewDept(e.target.value)}
+                            placeholder="New Department Name"
+                        />
+                        <button type="button" onClick={handleAddNewDept}>
+                            Add Department
+                        </button>
                     </div>
                 )}
-                {formData.department && (
+                {!isAddingDept && formData.department && (
                     <div className="sm-field">
                         <label>Subject</label>
                         <Select
@@ -182,8 +255,15 @@ const UploadMaterial = () => {
                 )}
                 {isAddingSubject && (
                     <div className="sm-add-new">
-                        <input type="text" value={newSubject} onChange={(e) => setNewSubject(e.target.value)} placeholder="New Subject Name" />
-                        <button type="button" onClick={handleAddNewSubject}>Add Subject</button>
+                        <input
+                            type="text"
+                            value={newSubject}
+                            onChange={(e) => setNewSubject(e.target.value)}
+                            placeholder="New Subject Name"
+                        />
+                        <button type="button" onClick={handleAddNewSubject}>
+                            Add Subject
+                        </button>
                     </div>
                 )}
                 {formData.subject && (
@@ -201,8 +281,15 @@ const UploadMaterial = () => {
                 )}
                 {isAddingTopic && (
                     <div className="sm-add-new">
-                        <input type="text" value={newTopic} onChange={(e) => setNewTopic(e.target.value)} placeholder="New Topic Name" />
-                        <button type="button" onClick={handleAddNewTopic}>Add Topic</button>
+                        <input
+                            type="text"
+                            value={newTopic}
+                            onChange={(e) => setNewTopic(e.target.value)}
+                            placeholder="New Topic Name"
+                        />
+                        <button type="button" onClick={handleAddNewTopic}>
+                            Add Topic
+                        </button>
                     </div>
                 )}
                 <div className="sm-field">
@@ -219,7 +306,10 @@ const UploadMaterial = () => {
                     <label>File</label>
                     <input type="file" onChange={handleFileChange} required />
                 </div>
-                <button type="submit">Upload Material</button>
+                <div className="sm-btnGroup">
+                    <button type="submit">Upload Material</button>
+                    <button type="button" onClick={()=>onButtonClick(true)}>Cancel</button>
+                </div>
             </form>
             {message && <div className="sm-message">{message}</div>}
         </div>
