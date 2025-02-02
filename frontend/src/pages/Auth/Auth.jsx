@@ -25,7 +25,7 @@ const Auth = () => {
         {
           setPassError(null);
           await signup(remail,name,rpassword,cpassword,college);
-          navigate('/about'); 
+          navigate('/admin'); 
         }
       }
     const [email, setEmail] = useState('');

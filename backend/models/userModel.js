@@ -71,8 +71,14 @@ userSchema.statics.register = async function(email,name,password,id,role="admin"
   const hash = await bcrypt.hash(password,salt);
   let canCreateEvent = false;
   if(role=="admin") canCreateEvent = true
-  const user = this.create({email,name,password:hash,role,college: id,canCreateEvent});
-  return user
+  try {
+    const user = await this.create({ email, name, password: hash, role, college: id, canCreateEvent });  // ✅ Await here
+    console.log("User Created:", user);
+    return user;
+  } catch (error) {
+    console.error("Error creating user:", error);
+    throw error; 
+  }
 }
 userSchema.statics.login = async function(email,password){
   if(!email || !password)
