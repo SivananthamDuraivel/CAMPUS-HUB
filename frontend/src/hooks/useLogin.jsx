@@ -18,6 +18,7 @@ export const useLogin = ()=>{
 
     if(!response.ok)
     {
+      console.log(json.error)
       setIsLoading(false)
       setError(json.error)
     }

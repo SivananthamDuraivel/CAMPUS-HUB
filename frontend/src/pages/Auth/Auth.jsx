@@ -20,12 +20,13 @@ const Auth = () => {
         if(rpassword!==cpassword)
         {
           setPassError("Password doesn't match!");
+          return;
         }
         else
         {
           setPassError(null);
-          await signup(remail,name,rpassword,cpassword,college);
-          navigate('/admin'); 
+          const success = await signup(remail,name,rpassword,cpassword,college);
+          if(success) navigate('/admin'); 
         }
       }
     const [email, setEmail] = useState('');
@@ -33,8 +34,8 @@ const Auth = () => {
     const { login, isLoading, error } = useLogin();
     const handleClick = async (e) => {
         e.preventDefault();
-        await login(email, password);
-        navigate('/admin'); 
+        const success = await login(email, password);
+        if(success) navigate('/admin'); 
     };
     const [signUpMode, setSignUpMode] = useState(false);
     const handleSignInClick = () => {
@@ -54,11 +55,11 @@ const Auth = () => {
                         <h2 className={styles["auth-title"]}>Sign in</h2>
                         <div className={styles["auth-input-field"]}>
                             <i className="fas fa-user"></i>
-                            <input type="email" onChange={(e) => setEmail(e.target.value)} value={email} placeholder="Email" />
+                            <input type="email" onChange={(e) => setEmail(e.target.value)} value={email} placeholder="Email" required/>
                         </div>
                         <div className={styles["auth-input-field"]}>
                             <i className="fas fa-lock"></i>
-                            <input type="password" onChange={(e) => setPassword(e.target.value)} value={password} placeholder="Password" />
+                            <input type="password" onChange={(e) => setPassword(e.target.value)} value={password} placeholder="Password" required/>
                         </div>
                         {error && <div>{error}</div>}
                         <input type="submit" value="Login" className={`${styles["auth-btn"]} ${styles["auth-solid"]}`} />

@@ -1,7 +1,6 @@
 const Year = require("../models/YearModel");
 const Department = require("../models/DepartmentModel");
 
-
 const addYear = async (req, res) => {
   try {
     const { yearName, departmentId } = req.body;

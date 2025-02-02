@@ -96,6 +96,7 @@ userSchema.statics.login = async function(email,password){
   const exists = await bcrypt.compare(password,user.password);
   if(!exists)
   {
+    console.log("Password does not match")
     throw Error("Password doesn't match!!!");
   }
 
