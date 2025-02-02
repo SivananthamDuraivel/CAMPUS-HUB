@@ -11,6 +11,7 @@ import Admin from './pages/AdminLanding/AdminLanding'
 import ViewUsers from './pages/ViewUsers/ViewUsers'
 import Footer from "./components/Footer/Footer";
 import Sidebar from "./components/Sidebar/Sidebar";
+import Sample from "./components/Sample/Sample";
 import StudyMaterial from './pages/StudyMaterialFeature/StudyMaterial/StudyMaterial';
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
             <Route path="/timetable" element={user?<TimeTable/>:<LandingPage/>}></Route>
             <Route path="/viewUsers" element={user?<ViewUsers/>:<LandingPage/>}></Route>
             <Route path="/admin" element={user?<Admin/>:<LandingPage/>}></Route>
+            <Route path="/sample" element={user?<Sample/>:<LandingPage/>}></Route>
             <Route path="/" element={<LandingPage/>}></Route>
           </Routes>
         </div>

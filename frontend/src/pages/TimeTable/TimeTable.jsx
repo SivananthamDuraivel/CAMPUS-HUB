@@ -1,176 +1,117 @@
-import "./TimeTable.css"
-import Sidebar from "../../components/Sidebar/Sidebar"
-const TimeTable = () => {
-  return ( 
-    <>
-    <Sidebar />
-    <div className="timetable">
-      <h1>TIME TABLE</h1>
-  <table>
-    <tr>
-      <th>DAY</th>
-      <th>
-        <p>1</p>
-        <p>8:00 -9:00</p>
-      </th>
-      <th>
-        <p>2</p>
-        <p>9:00-9:50</p>
-      </th>
-      <th>
-        <p>9:50-10:10</p>
-      </th>
-      <th>
-        <p>3</p>
-        <p>10:10-11:00</p>
-      </th>
-      <th>
-        <p>4</p>
-        <p>11:00-11:50</p>
-      </th>
-      <th>
-        <p>5/L</p>
-        <p>11:50-12:30/12:40</p>
-      </th>
-      <th>
-        <p>L/5</p>
-        <p>12:30/12:40-1:20</p>
-      </th>
-      <th>
-        <p>6</p>
-        <p>1:20-2:10</p>
-      </th>
-      <th>
-        <p>7</p>
-        <p>2:10-3:00</p>
-      </th>
-    </tr>
-    <tr>
-      <th>TUESDAY</th>
-      <td title="Computer Networks" colspan="2">
-        <p>CS19541 CN</p>
-        <p>A 208</p>
-      </td>
-      <td rowspan="5">
-        <p>
-          B<br/>
-          R<br/>
-          E<br/>
-          A<br/>
-          K<br/>
-        </p>
-      </td>
-      <td colspan="2">
-        <p>CS19541 CN / AI19341 POAI LAB</p>
-        <p>TLFL4/TLGL3</p>
-      </td>
-      <td>
-        LUNCH
-      </td>
-      <td title="Human Computer Interaction" colspan="2">
-        <p>CS19P06</p>
-        <p>A208</p>
-      </td>
-      <td>
-        <p>COUN</p>
-        <p>A208</p>
-      </td>
-    </tr>
-    <tr>
-      <th>WEDNESDAY</th>
-      <td colspan="2">
-        <p>CS19542 IP / AI19341 POAI LAB</p>
-        <p>TLFL1/TLGL3</p>
-      </td>
-      <td title="Internet Programming">
-        <p>CS19542 IP</p>
-        <p>B218</p>
-      </td>
-      <td colspan="2">
-        <p>VAP</p>
-      </td>
-      <td>
-        LUNCH
-      </td>
-      <td colspan="2" title="Theory Of Computation">
-        <p>CS19501 TOC</p>
-        <p>A105</p>
-      </td>
-    </tr>
-    <tr>
-      <th>THURSDAY</th>
-      <td title="Internet Programming" colspan="2">
-        <p>CS19452 IP</p> 
-        <p>A208</p>
-      </td>
-      <td colspan="2">
-        <p>CS1906 HCI / CS19452 IP LAB</p>
-        <p>TLFL5/JL2</p>
-      </td>
-      <td>
-        <p>LUNCH</p>
-      </td>
-      <td title="Principles Of Artificial Intelligence">
-        <p>AI19341 POAI</p>
-        <p>A208</p>
-      </td>
-      <td colspan="2">
-        <p>CS19542 IP / CS19541 CN LAB</p>
-        <p>TLFL4/TLFL1</p>
-      </td>
-    </tr>
-    <tr>
-      <th>
-        FRIDAY
-      </th>
-      <td colspan="2">
-        <p>CS1906 HCI / CS19541 CN LAB</p>
-        <p>TLFL5/TLFL4</p>
-      </td>    
-      <td colspan="2" title="Theory Of Computation">
-        <p>CS19501 TOC</p>
-        <p>A105</p>
-      </td>  
-      <td>
-        <p>LUNCH</p>
-      </td>
-      <td title="Computer Networks">
-        <p>CS19541 CN</p>
-        <p>A208</p>
-      </td>
-      <td title="Robotic Process Automation"  colspan="2">
-        <p>OAI1903 RPA</p>
-        <p>A105</p>
-      </td>
-    </tr>
-    <tr>
-      <th>SATURDAY</th>
-      <td colspan="2" title="Principles Of Artificial Intelligence">
-        <a href="">
-          <p>AI19341 POAI</p>
-          <p>A208</p>
-        </a>
-      </td>
-      <td title="Robotic Process Automation" colspan="2">
-        <p>OAI1903 RPA</p>
-        <p>A105</p>
-      </td>
-      <td>
-        <p>LUNCH</p>
-      </td>
-      <td title="Internet Programming" colspan="2">
-        <p>CS19452 IP</p> 
-        <p>A211</p>
-      </td>
-      <td colspan="2">
-        <p>CS19542 IP / CS19541 CN LAB</p>
-        <p>JL2/JL1</p>
-      </td>
-    </tr>
-  </table>
+import {useState} from "react";
+import axios from "axios";
+import styles from "./Timetable.module.css";
+
+const Timetable = () => {
+  const [formData, setFormData] = useState({
+    college: "",
+    department: "",
+    year: "",
+    section: "",
+    days: [],
+  })
+
+  const handleInputChange = (e) => {
+    setFormData({...formData, [e.target.name]: e.target.value});
+  }
+  
+  const handleDayChange = (index, value) => {
+    const updatedDays = [...formData.days];
+    updatedDays[index].day = value;
+    setFormData({...formData, days: updatedDays});
+  }
+  
+  
+  const addDay = () => {
+    setFormData({
+      ...formData,
+      days: [...formData.days, { day: "", timetable: [] }],
+    });
+  };
+  
+  const addPeriod = (index) => {
+    const updatedDays = [...formData.days];
+    updatedDays[index].timetable.push({
+      periodNumber: "",
+      startTime: "",
+      endTime: "",
+      subject: "",
+      teacher: "",
+      room: "",
+    })
+    setFormData({...formData, days: updatedDays});
+  }
+  
+  const handlePeriodChange = (dayIndex, periodIndex, field, value) => {
+    const updatedDays = [...formData.days];
+    updatedDays[dayIndex].timetable[periodIndex][field] = value;
+    setFormData({...formData, days: updatedDays})
+  }
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:5000/api/timetable/insertTimetable",formData);
+      alert("Timetable added successfully");
+    }
+    catch(error) {
+      console.error("Error submitting timetable:", error);
+      alert("Failed to add timetable.");
+    }
+  }
+
+  return (
+    <div className = {styles["container"]}>
+      <h2>Add TimeTable</h2>
+      <form onSubmit={handleSubmit}>
+        <label>College :</label>
+        <input type="text" name="college" value = {formData.college} onChange = {handleInputChange} required/>
+        <label>Department :</label>
+        <input type="text" name="department" value = {formData.department} onChange = {handleInputChange} required/>
+        <label>Year :</label>
+        <input type="text" name="year" value = {formData.year} onChange = {handleInputChange} required/>
+        <label>Section :</label>
+        <input type="text" name="section" value = {formData.section} onChange = {handleInputChange} required/>
+        <button type="button" onClick={addDay} className={styles["add-btn"]}>+ Add Day</button>
+        { 
+          formData.days.map((day, dayIndex) => (
+            <div key={dayIndex} className={styles["day-container"]}>
+              <label>Day: </label>
+              <select value={day.day} onChange={(e)=>handleDayChange(dayIndex, e.target.value)} required>
+                <option value="">Select a day</option>
+                {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((d)=>(
+                  <option key={d} value={d}>{d}</option>
+                ))}
+              </select>
+              <button type="button" onClick = {() => addPeriod(dayIndex)} className={styles["add-btn"]}>+ Add Period</button>
+              {
+                day.timetable.map((period, periodIndex) => (
+                  <div key={periodIndex} className="period-container">
+                    <label>Period Number: </label>
+                    <input type="number" value = {period.periodNumber} onChange = {(e) => handlePeriodChange(dayIndex, periodIndex, "periodNumber", e.target.value)} required/>
+  
+                    <label>Start Time:</label>
+                    <input type="time" value={period.startTime} onChange={(e) => handlePeriodChange(dayIndex, periodIndex, "startTime", e.target.value)} required />
+  
+                    <label>End Time:</label>
+                    <input type="time" value={period.endTime} onChange={(e) => handlePeriodChange(dayIndex, periodIndex, "endTime", e.target.value)} required />
+  
+                    <label>Subject:</label>
+                    <input type="text" value={period.subject} onChange={(e) => handlePeriodChange(dayIndex, periodIndex, "subject", e.target.value)} required />
+  
+                    <label>Teacher:</label>
+                    <input type="text" value={period.teacher} onChange={(e) => handlePeriodChange(dayIndex, periodIndex, "teacher", e.target.value)} required />
+  
+                    <label>Room:</label>
+                    <input type="text" value={period.room} onChange={(e) => handlePeriodChange(dayIndex, periodIndex, "room", e.target.value)} required />
+                  </div>
+                ))
+              }
+            </div>
+          ))
+        }
+        <button type="submit" className={styles["submit-btn"]}>Submit</button>
+      </form>
     </div>
-    </>
-   );
+  )
 }
- 
-export default TimeTable;
+export default Timetable;

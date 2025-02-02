@@ -51,7 +51,6 @@ const createEvent = async (req, res) => {
         }
       }
       catch(error) {
-        console.log("a")
         console.log(error.message)
       }
 

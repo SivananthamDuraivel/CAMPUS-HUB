@@ -1,29 +1,28 @@
-const Timetable = require('../models/TimetableModel');
+const Timetable = require("../models/TimetableModel");
 
-const createTimetable = async (req, res) => {
+const insertTimetable = async(req,res)=>{
   try {
-    const { day, time, subject, teacher, room, collegeId } = req.body;
-
-    if (!day || !time || !subject || !teacher || !room || !collegeId) {
-      return res.status(400).json({ error: "All fields must be filled." });
+    const {college,department,year,section,days} = req.body;
+    if(!college || !department || !year || !section || !days) {
+      return res.status(400).json({message : "All fields are required"});
     }
+    console.log("hello");
+    const newTimeTable = new Timetable({
+      college,
+      department,
+      year,
+      section,
+      days
+    })
 
-    const timetable = new Timetable({
-      day,
-      time,
-      subject,
-      teacher,
-      room,
-      college: collegeId,
-    });
+    await newTimeTable.save();
 
-    await timetable.save();
-
-    res.status(201).json({ message: "Timetable created successfully!", timetable });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error" });
+    return res.status(201).json({message : 'Timetable added successfully'});
   }
-};
+  catch(error) {
+    console.log("Error inserting timetable: ",error);
+    return res.status(500).json({message: 'Server error'})
+  }
+}
 
-module.exports = { createTimetable };
+module.exports = { insertTimetable }

@@ -58,6 +58,10 @@
   letter-spacing: 1px;
 }
 
+.quickLinks ul li {
+  list-style-type: none;
+}
+
 .quickLinks ul li .link {
   color: #fff;
 }
@@ -79,6 +83,7 @@
 
 .contact ul li {
   margin-top: 5px;
+  list-style-type: none;
 }
 
 .contact ul li a {
