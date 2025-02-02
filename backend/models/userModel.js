@@ -34,6 +34,18 @@ const userSchema = new Schema({
     ref: 'College',
     required: true
   },
+  department: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Department"
+  },
+  year: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Year"
+  },
+  section: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: "Section" 
+  }
 })
 
 userSchema.statics.register = async function(email,name,password,id,role="admin"){

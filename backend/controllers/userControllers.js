@@ -1,5 +1,5 @@
 const {mongoose} = require("mongoose");
-const User_details = require("../models/userModel")
+const User_details = require("../models/UserModel")
 const getUser = async (req,res)=>{
   const {email} = req.params;
   // if(!mongoose.Types.ObjectId.isValid(id))

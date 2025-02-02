@@ -1,4 +1,4 @@
-const User_details = require("../models/userModel");
+const User_details = require("../models/UserModel");
 const updateCanCreateEvent = async (req, res) => {
   const { userId, canCreateEvent } = req.body;
   if (req.user.role !== "admin") {

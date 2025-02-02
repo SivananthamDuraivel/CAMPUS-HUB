@@ -7,7 +7,9 @@ const eventRoute = require("./routes/eventRoutes");
 const timetableRoute = require("./routes/timetableRoutes")
 const studyMaterialRoute = require("./routes/studyMaterialRoutes");
 const uploadFileRoute = require('./routes/uploadFileRoutes');
-
+const departmentRoute = require('./routes/departmentRoutes');
+const yearRoute = require('./routes/yearRoutes');
+const sectionRoute = require('./routes/sectionRoutes');
 const {mongoose} = require("mongoose");
 const cors = require("cors")
 const app = express()
@@ -20,15 +22,18 @@ app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 app.use("/api/auth",auth);
-app.use("/api/user",userRoute)
-app.use("/api/admin",adminRoute)
-app.use("/api/events",eventRoute)
-app.use("/api/studyMaterial",studyMaterialRoute)
-app.use("/api/upload",uploadFileRoute)
+app.use("/api/user",userRoute);
+app.use("/api/admin",adminRoute);
+app.use("/api/events",eventRoute);
+app.use("/api/studyMaterial",studyMaterialRoute);
+app.use("/api/upload",uploadFileRoute);
 app.use("/api/timetable",timetableRoute);
+app.use("/api/department",departmentRoute);
+app.use("/api/year", yearRoute);
+app.use("/api/section", sectionRoute);
 
 app.get("/",(req,res)=>{
-  res.json("hello")
+  res.json("Campus Grid");
 })
 
 mongoose.connect(process.env.MONGO_URI)

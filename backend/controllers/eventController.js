@@ -1,5 +1,5 @@
 const Event = require('../models/EventsModel');
-const User = require('../models/userModel');
+const User = require('../models/UserModel');
 const sendEmail = require("../utils/sendEmail")
 
 const createEvent = async (req, res) => {
