@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const express = require("express");
 const auth = require("./routes/authRoute");
 const userRoute = require("./routes/userRoutes");
@@ -6,6 +7,7 @@ const adminRoute = require("./routes/adminRoutes");
 const eventRoute = require("./routes/eventRoutes");
 const timetableRoute = require("./routes/timetableRoutes")
 const studyMaterialRoute = require("./routes/studyMaterialRoutes");
+const questionRoute  = require('./routes/questionRoutes');
 const uploadFileRoute = require('./routes/uploadFileRoutes');
 const departmentRoute = require('./routes/departmentRoutes');
 const yearRoute = require('./routes/yearRoutes');
@@ -27,6 +29,7 @@ app.use("/api/admin",adminRoute);
 app.use("/api/events",eventRoute);
 app.use("/api/studyMaterial",studyMaterialRoute);
 app.use("/api/upload",uploadFileRoute);
+app.use("/api/questions",questionRoute)
 app.use("/api/timetable",timetableRoute);
 app.use("/api/department",departmentRoute);
 app.use("/api/year", yearRoute);
