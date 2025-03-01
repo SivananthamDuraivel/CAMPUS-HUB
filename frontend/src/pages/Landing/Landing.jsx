@@ -60,8 +60,6 @@ const Landing = () => {
                             }`}
                         >
                             <ul>
-                                <li><a href="#">Events</a></li>
-                                <li><Link to="/addPeople">Add Students</Link></li>
                                 {user && (
                                     <li>
                                         <Link

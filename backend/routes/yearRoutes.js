@@ -17,7 +17,7 @@ router.get("/getAllYears/:departmentId", getAllYears);
 
 router.get("/getYear/:yearId", getYearById);
 
-router.put("/updateYear/:yearId", updateYear);
+router.patch("/updateYear/:yearId", updateYear);
 
 router.delete("/deleteYear/:yearId", deleteYear);
 

@@ -9,7 +9,8 @@ import './Sidebar.css';
 
 function Navbar() {
   const {user} = useAuthContext();
-  const role = "admin"
+  const role = user.role;
+  console.log(role)
   const [sidebar, setSidebar] = useState(false);
 
   const showSidebar = () => setSidebar(!sidebar);

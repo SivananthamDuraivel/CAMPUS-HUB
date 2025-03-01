@@ -17,7 +17,6 @@
   cursor: pointer;
   transition: 0.5s;
   margin: 20px;
-
 }
 
 .box:hover {
@@ -39,10 +38,14 @@
 
 .box h2 {
   font-weight: 500;
+  text-align: left;
   margin-top: 25px;
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
+.box h2 {
+  text-decoration: none !important;
+}
 .box:hover h2 {
   color: #fff;
 }

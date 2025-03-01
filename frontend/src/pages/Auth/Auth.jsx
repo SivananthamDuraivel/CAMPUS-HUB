@@ -16,6 +16,7 @@ const Auth = () => {
     const [college,setCollege] = useState('');
     const [passError,setPassError] = useState(null);
     const handleRegClick = async(e)=>{
+        console.log("Inside register");
         e.preventDefault();
         if(rpassword!==cpassword)
         {
@@ -24,9 +25,10 @@ const Auth = () => {
         }
         else
         {
-          setPassError(null);
-          const success = await signup(remail,name,rpassword,cpassword,college);
-          if(success) navigate('/admin'); 
+            setPassError(null);
+            const success = await signup(remail,name,rpassword,cpassword,college);
+            if(success)
+            navigate('/admin');
         }
       }
     const [email, setEmail] = useState('');
@@ -34,8 +36,10 @@ const Auth = () => {
     const { login, isLoading, error } = useLogin();
     const handleClick = async (e) => {
         e.preventDefault();
+        console.log("Inside login");
         const success = await login(email, password);
-        if(success) navigate('/admin'); 
+        if(success)
+            navigate('/admin'); 
     };
     const [signUpMode, setSignUpMode] = useState(false);
     const handleSignInClick = () => {

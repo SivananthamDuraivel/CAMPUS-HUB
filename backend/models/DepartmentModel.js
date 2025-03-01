@@ -4,7 +4,8 @@ const departmentSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    trime: true
+    trim
+    : true
   },
   college: {
     type: mongoose.Schema.Types.ObjectId,
