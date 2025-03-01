@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
-const User_details = require("../models/UserModel");
+const User_details = require("../models/userModel");
 const requireAuth = async (req,res,next) => {
+
   const {authorization} = req.headers;
   if(!authorization)
   {
@@ -8,8 +9,7 @@ const requireAuth = async (req,res,next) => {
   }
 
   const token = authorization.split(' ')[1]
-  console.log(token)
-
+  
   try {
     const {_id} = jwt.verify(token,process.env.SECRET_KEY)
     req.user = await User_details.findOne({_id}).select('_id role college')

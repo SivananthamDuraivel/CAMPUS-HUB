@@ -13,6 +13,7 @@ import Footer from "./components/Footer/Footer";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Sample from "./components/Sample/Sample";
 import StudyMaterial from './pages/StudyMaterialFeature/StudyMaterial/StudyMaterial';
+import Questions from './pages/Questions/Questions';
 
 function App() {
   const {user} = useAuthContext()
@@ -26,12 +27,13 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <div className="pages">
-          <Routes>
+          <Routes> 
             <Route path="/auth" element={!user?<Auth/>:<Sidebar/>}></Route>
             <Route path="/profile" element={user?<Profile/>:<Navigate to="/"/>}></Route>
             <Route path="/addPeople" element={user?<AddPeople/>:<LandingPage/>}/>
             <Route path="/examHallPlanner" element={user?<ExamHallPlanner/>:<LandingPage/>}></Route>
-            <Route path='/studyMaterial' element={<StudyMaterial/>}></Route>
+            <Route path='/studyMaterial' element={user? <StudyMaterial/> : <LandingPage/>}></Route>
+            <Route path='/question' element={user ? <Questions/> : <LandingPage/>}></Route>
             <Route path="/createEvent" element={user?<CreateEvent/>:<LandingPage/>}></Route>
             <Route path="/timetable" element={user?<TimeTable/>:<LandingPage/>}></Route>
             <Route path="/viewUsers" element={user?<ViewUsers/>:<LandingPage/>}></Route>
