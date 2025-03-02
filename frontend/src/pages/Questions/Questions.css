@@ -270,3 +270,97 @@
     cursor: pointer;
     border-radius: 5px;
 }
+
+.QA-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+/* Vote Buttons */
+.vote-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.vote-icon {
+    display: inline-block;
+    font-size: 18px;
+    color: white;
+    border-radius: 5px;
+    padding: 4px 10px;
+}
+
+.upvote { background: #2ccc00; }
+.downvote { background: red; }
+
+/* Comment Button
+.comment-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+
+.comment-icon {
+    background: white;
+    border-radius: 50%;
+    padding: 4px;
+} */
+
+/* Comment Box */
+.comment-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.comment-box textarea {
+    width: 100%;
+    min-height: 50px;
+    max-height: 200px;
+    font-size: 14px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical; /* Allows growing */
+}
+
+/* Comment Box Actions */
+.comment-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.comment-actions .post-btn {
+    background-color:#2ccc00;
+    color: rgb(255, 255, 255);
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.comment-actions .cancel-btn {
+    background-color: red;
+    color: rgb(255, 255, 255);
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Post Info */
+.post-info {
+    font-size: 14px;
+    color: gray;
+}

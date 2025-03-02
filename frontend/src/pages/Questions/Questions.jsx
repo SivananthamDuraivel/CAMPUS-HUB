@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FaRegComment } from "react-icons/fa";
 import axios from "axios";
 import Select from "react-select";
 import '../Questions/Questions.css'
@@ -18,7 +19,10 @@ const Questions = () => {
     const [isPostModalOpen, setIsPostModalOpen] = useState(false);
     const [newQuestion, setNewQuestion] = useState("");
     
-    const [commentText, setCommentText] = useState({});
+    const [showCommentBox, setShowCommentBox] = useState(false);
+    const [selectedComment, setSelectedComment] = useState(null);
+    const [commentText, setCommentText] = useState("");
+
     const [expandedComments, setExpandedComments] = useState({});
     const [expandedReplies, setExpandedReplies] = useState({});
 
@@ -29,6 +33,12 @@ const Questions = () => {
             Authorization: `Bearer ${user.token}`,
         },
     };
+
+    const toggleCommentBox = () => {
+        setShowCommentBox(!showCommentBox);
+        setCommentText(""); // Clear text when closing
+    };
+    
     // Fetch subjects
     useEffect(() => {
         axios.get("http://localhost:5000/api/questions/subjects")
@@ -51,7 +61,7 @@ const Questions = () => {
     useEffect(() => {
         if (selectedTopic) {
             axios.get(`http://localhost:5000/api/questions?subject=${selectedSubject}&topic=${selectedTopic}`)
-                .then(res => setQuestions(res.data))
+                .then(res => {setQuestions(res.data)})
                 .catch(err => console.error("Error fetching questions:", err));
         } else {
             setQuestions([]);
@@ -87,23 +97,30 @@ const Questions = () => {
     };
 
     // Handle comment submission
-    const handlePostComment = (questionId) => {
-        console.log("q-id : ",questionId)
-        if (!commentText[questionId]?.trim()) return;
+    const handleComment = async (qid,text,parentCommentId) => {
+        if (!commentText.trim()) return;
+        const addedComment = axios.post("http://localhost:5000/api/questions/comment", {
+            questionId: qid,
+            text: text,
+            parentCommentId: parentCommentId
+        }, config)
+        .then(res=>console.log(res.data))
+        .catch(err => console.error("Error posting comment:", err));
 
-        axios.post(`http://localhost:5000/api/questions/${questionId}/comments`, {
-            text: commentText[questionId]
-        })
-            .then(res => {
-                setQuestions(questions.map(q => {
-                    if (q._id === questionId) {
-                        return { ...q, comments: [...q.comments, res.data] };
+        setQuestions(prevQuestions =>
+            prevQuestions.map(question =>
+                question._id === qid
+                    ? {
+                        ...question,
+                        comments: [...(question.comments || []), addedComment] // Ensure comments exist
                     }
-                    return q;
-                }));
-                setCommentText({ ...commentText, [questionId]: "" });
-            })
-            .catch(err => console.error("Error posting comment:", err));
+                    : question
+            )   
+        );
+
+
+        setCommentText("");
+        setShowCommentBox(false);
     };
 
     const handleVote = async (id, type, voteType) => {
@@ -198,10 +215,25 @@ const Questions = () => {
                                     <span style={{ display: "inline-block", fontSize: "18px", color: "#ffffff", background: "red", borderRadius: "5px", padding: "1px 10px" }}>⇩</span>
                                     {q.downvotes.length}
                                 </button>
-                                <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>Posted by {q.user.name} - {new Date(q.updatedAt).toLocaleString()}</span>
+                                <button  onClick={() => {setShowCommentBox(!showCommentBox);setSelectedComment(q._id)}} style={{ display: "flex", alignItems: "center", gap: "8px", marginLeft:"1rem" }}>
+                                    <FaRegComment size={32} style={{ backgroundColor: "white", borderRadius: "50%", padding: "4px" }} />{q.comments.length}
+                                </button>
+                                <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>Posted by {q.user?.name || "unknown"} - {new Date(q.updatedAt).toLocaleString()}</span>        
                             </div>
-
-                            {/* Toggle Comments */}
+                            
+                            {(showCommentBox && q._id === selectedComment) && (
+                                <div className="comment-box">
+                                    <textarea
+                                        value={commentText}
+                                        onChange={(e) => setCommentText(e.target.value)}
+                                        placeholder="Write a comment...."
+                                    />
+                                    <div className="comment-actions">
+                                        <button onClick={() => handleComment(q._id, commentText, null)} className="post-btn">Post</button>
+                                        <button onClick={toggleCommentBox} className="cancel-btn">Cancel</button>
+                                    </div>
+                                </div>
+                            )}
                             <button className="QA-toggle-btn" onClick={() => toggleComments(q._id)}>
                                 {expandedComments[q._id] ?
                                     (<p>Hide Comments <span style={{ fontSize: "20px" }}>▴</span></p>)
@@ -224,8 +256,24 @@ const Questions = () => {
                                                     <span style={{ display: "inline-block", fontSize: "16px", color: "#ffffff", background: "red", borderRadius: "5px", padding: "1px 10px" }}>⇩</span>
                                                     {comment.downvotes.length}
                                                 </button>
-                                                <span>{comment.user.name} - {new Date(comment.updatedAt).toLocaleString()}</span>
+                                                <button onClick={() => { setShowCommentBox(!showCommentBox); setSelectedComment(comment._id) }} style={{ display: "flex", alignItems: "center", gap: "8px", marginLeft: "1rem" }}>
+                                                    <FaRegComment size={32} style={{ backgroundColor: "white", borderRadius: "50%", padding: "4px" }} />{comment.replies.length}
+                                                </button>
+                                                <span>{comment.user?.name || "unknown"} - {new Date(comment.updatedAt).toLocaleString()}</span>
                                             </div>
+                                            {(showCommentBox && comment._id === selectedComment) && (
+                                                <div className="comment-box">
+                                                    <textarea
+                                                        value={commentText}
+                                                        onChange={(e) => setCommentText(e.target.value)}
+                                                        placeholder="Write a comment...."
+                                                    />
+                                                    <div className="comment-actions">
+                                                        <button onClick={() => handleComment(q._id, commentText, null)} className="post-btn">Post</button>
+                                                        <button onClick={toggleCommentBox} className="cancel-btn">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            )}
 
                                             {/* Toggle Replies */}
                                             {comment.replies.length > 0 && (
@@ -252,26 +300,30 @@ const Questions = () => {
                                                                     <span style={{ display: "inline-block", fontSize: "15px", color: "#ffffff", background: "red", borderRadius: "5px", padding: "1px 10px" }}>⇩</span>
                                                                     {reply.downvotes.length}
                                                                 </button>
-                                                                <span>{reply.user.name} - {new Date(reply.updatedAt).toLocaleString()}</span>
+                                                                <button onClick={() => { setShowCommentBox(!showCommentBox); setSelectedComment(reply._id) }} style={{ display: "flex", alignItems: "center", gap: "8px", marginLeft: "1rem" }}>
+                                                                    <FaRegComment size={32} style={{ backgroundColor: "white", borderRadius: "50%", padding: "4px" }} />{q.comments.length}
+                                                                </button>
+                                                                <span>{reply.user?.name || "unknown"} - {new Date(reply.updatedAt).toLocaleString()}</span>
                                                             </div>
+                                                            {(showCommentBox && reply._id === selectedComment) && (
+                                                                <div className="comment-box">
+                                                                    <textarea
+                                                                        value={commentText}
+                                                                        onChange={(e) => setCommentText(e.target.value)}
+                                                                        placeholder="Write a comment...."
+                                                                    />
+                                                                    <div className="comment-actions">
+                                                                        <button onClick={() => handleComment(q._id, commentText, null)} className="post-btn">Post</button>
+                                                                        <button onClick={toggleCommentBox} className="cancel-btn">Cancel</button>
+                                                                    </div>
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     ))}
                                                 </div>
                                             )}
                                         </div>
                                     ))}
-
-                                    {/* Add Comment Input */}
-                                    <input
-                                        type="text"
-                                        className="QA-comment-input"
-                                        placeholder="Add a comment..."
-                                        value={commentText[q._id] || ""}
-                                        onChange={(e) => setCommentText({ ...commentText, [q._id]: e.target.value })}
-                                    />
-                                    <button className="QA-comment-btn" onClick={() => handlePostComment(q._id)}>
-                                        Post Comment
-                                    </button>
                                 </div>
                             )}
                         </div>
