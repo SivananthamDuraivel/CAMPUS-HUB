@@ -24,7 +24,7 @@ const addDepartment = async (req, res) => {
 
     res.status(201).json({ message: "Department added successfully", department });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message })
   }
 };
 

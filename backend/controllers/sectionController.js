@@ -3,8 +3,11 @@ const Year = require("../models/YearModel");
 
 const addSection = async (req, res) => {
   try {
+    console.log("Hello")
     const { sectionName, yearId } = req.body;
-
+    console.log(sectionName);
+    console.log(yearId);
+    
     if (!sectionName || !yearId) {
       return res.status(400).json({ error: "Section name and yearId are required" });
     }

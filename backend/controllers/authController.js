@@ -55,7 +55,7 @@ const addTeacher = async (req, res) => {
   
       <p><strong>Email:</strong> ${email}<br>
       <strong>Temporary Password:</strong> ${password}</p>
-  
+   
       <p>Please log in using these credentials and change your password upon your first login for security purposes.</p>
   
       <p>If you encounter any issues or have any questions, feel free to reach out to our support team.</p>

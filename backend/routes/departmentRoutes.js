@@ -17,7 +17,7 @@ router.get("/getAllDepts", getAllDepartments);
 
 router.get("/getDept/:departmentId", getDepartmentById);
 
-router.put("/updateDept/:departmentId", updateDepartment);
+router.put("/updateDept/:departmentId", updateDepartment)
 
 router.delete("/deleteDept/:departmentId", deleteDepartment);
 

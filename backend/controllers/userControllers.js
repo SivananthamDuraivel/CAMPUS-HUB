@@ -1,4 +1,3 @@
-const {mongoose} = require("mongoose");
 const User_details = require("../models/UserModel")
 const getUser = async (req,res)=>{
   const {email} = req.params;
