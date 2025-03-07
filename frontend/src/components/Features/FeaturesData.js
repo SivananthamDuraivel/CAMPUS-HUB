@@ -1,5 +1,5 @@
 import { FaCalendarAlt, FaChalkboardTeacher, FaTasks } from "react-icons/fa";
-import { MdEvent, MdWork, MdGroups } from "react-icons/md";
+import { MdEvent, MdWork, MdGroups, MdNoteAdd, MdQuestionAnswer, MdSettings } from "react-icons/md";
 import { IoListSharp } from "react-icons/io5";
 
 const features = [
@@ -38,6 +38,24 @@ const features = [
     name: "To Do List",
     description: "Manage tasks and deadlines effectively.",
     icon: IoListSharp,
+  },
+  {
+    id: 7,
+    name: "Upload Notes",
+    description: "Upload and share study materials for students.",
+    icon: MdNoteAdd,
+  },
+  {
+    id: 8,
+    name: "Q&A Section",
+    description: "Ask and answer academic questions interactively.",
+    icon: MdQuestionAnswer,
+  },
+  {
+    id: 9,
+    name: "Management",
+    description: "Administer departments, users, and system settings.",
+    icon: MdSettings,
   },
 ];
 
