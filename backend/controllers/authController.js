@@ -35,7 +35,7 @@ const register = async(req,res)=>{
 }
 
 const addTeacher = async (req, res) => {
-  const { email, name, password} = req.body;
+  const { email, name, password, department} = req.body;
   try {
     const admin = await User.findById(req.user); 
     console.log(admin)
@@ -44,6 +44,8 @@ const addTeacher = async (req, res) => {
     }
     let college = await College.findOne({_id:admin.college});
     const user = await User.register(email, name, password, college._id, "teacher");
+    user.department = department;
+    await user.save();
     const token = createToken(user._id);
     const message = `
     <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
@@ -74,7 +76,8 @@ const addTeacher = async (req, res) => {
 }
 
 const addStudent = async (req, res) => {
-  const { email, name, password} = req.body;
+  const { email, name, password, department, year} = req.body;
+  console.log(req.body)
   try {
     const admin = await User.findById(req.user); 
     console.log(admin)
@@ -83,6 +86,9 @@ const addStudent = async (req, res) => {
     }
     let college = await College.findOne({_id:admin.college});
     const user = await User.register(email, name, password, college._id, "student");
+    user.department = department;
+    user.year = year;
+    await user.save();
     const token = createToken(user._id);
     const message = `
     <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
@@ -112,7 +118,5 @@ const addStudent = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 }
-
-
 
 module.exports = {login,register,addTeacher,addStudent};

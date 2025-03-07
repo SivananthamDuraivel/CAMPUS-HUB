@@ -2,78 +2,124 @@
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .title {
-  font-size: 24px;
-  font-weight: bold;
   text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
   margin-bottom: 20px;
 }
 
 .addSection {
   display: flex;
   gap: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  justify-content: center;
 }
 
-.addSection input {
-  flex: 1;
-  padding: 8px;
+.input {
+  flex-grow: 1;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
+  font-size: 1rem;
 }
 
-.addSection button {
+.addButton {
   background: #007bff;
   color: white;
+  padding: 10px 15px;
   border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s ease;
 }
 
-.addSection button:hover {
+.addButton:hover {
   background: #0056b3;
 }
 
-.list {
-  margin-top: 20px;
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .departmentCard {
+  background: white;
   padding: 15px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #02265b;
 }
 
-.yearCard {
-  margin-left: 15px;
+.departmentCard h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #444;
+}
+
+.manageYearsButton {
+  background: #02265b;
+  color: white;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+}
+
+.manageYearsButton:hover {
+  background: #0066ff;
+}
+
+.yearManagement {
+  margin-top: 10px;
   padding: 10px;
-  border-left: 3px solid #007bff;
-  background: #eef6ff;
-  border-radius: 4px;
-  margin-bottom: 10px;
+  background: #f1f1f1;
+  border-radius: 5px;
 }
 
-.yearCard h4 {
-  margin: 5px 0;
+.yearInputSection {
+  display: flex;
+  gap: 10px;
 }
 
-ul {
-  list-style-type: none;
+.addYearButton {
+  background: #17a2b8;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.addYearButton:hover {
+  background: #138496;
+}
+
+.errorText {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.yearList {
+  list-style: none;
   padding: 0;
+  margin-top: 10px;
 }
 
-ul li {
-  background: #e1f5fe;
-  margin: 5px 0;
-  padding: 5px 10px;
+.yearItem {
+  background: #e9ecef;
+  padding: 5px;
   border-radius: 4px;
+  margin-bottom: 5px;
 }

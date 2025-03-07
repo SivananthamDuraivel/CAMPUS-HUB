@@ -1,6 +1,6 @@
 const StudyMaterial = require("../models/StudyMaterialModel");
 
-// Fetch distinct departments
+
 const getDepartments = async (req, res) => {
     try {
         const departments = await StudyMaterial.distinct("department");

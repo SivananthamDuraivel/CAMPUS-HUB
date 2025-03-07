@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { insertTimetable } = require('../controllers/timetableController');
+const requireAuth = require("../middleware/requireAuth")
+const { insertTimetable, getTimetable } = require('../controllers/timetableController');
+router.use(requireAuth);
 
 
 router.post('/insertTimetable', insertTimetable);
+router.get('/getTimetable', getTimetable)
 
 module.exports = router;

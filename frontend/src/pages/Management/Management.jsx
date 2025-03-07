@@ -3,12 +3,14 @@ import axios from "axios";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import styles from "./Management.module.css";
 
+const yearOptions = ["First", "Second", "Third", "Fourth"];
+
 const Management = () => {
   const [departments, setDepartments] = useState([]);
   const [newDeptName, setNewDeptName] = useState("");
   const [expandedDept, setExpandedDept] = useState(null);
   const [yearInputs, setYearInputs] = useState({});
-
+  const [yearErrors, setYearErrors] = useState({});
   const { user } = useAuthContext();
 
   useEffect(() => {
@@ -20,7 +22,7 @@ const Management = () => {
         setDepartments(
           response.data.departments.map((dept) => ({
             ...dept,
-            years: dept.years || [], // Ensure years is always an array
+            years: dept.years || [],
           }))
         );
       })
@@ -38,11 +40,9 @@ const Management = () => {
         { name: newDeptName },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
+      alert("Department added");
 
-      setDepartments((prev) => [
-        ...prev,
-        { ...response.data.department, years: [] }, // Ensure years is an empty array initially
-      ]);
+      setDepartments((prev) => [...prev, { ...response.data.department, years: [] }]);
       setNewDeptName("");
     } catch (error) {
       console.error("Error adding department:", error);
@@ -53,12 +53,13 @@ const Management = () => {
     setExpandedDept(expandedDept === deptId ? null : deptId);
   };
 
-  const handleYearInputChange = (deptId, value) => {
+  const handleYearSelection = (deptId, value) => {
     setYearInputs((prev) => ({ ...prev, [deptId]: value }));
+    setYearErrors((prev) => ({ ...prev, [deptId]: "" })); 
   };
 
   const addYear = async (deptId) => {
-    if (!yearInputs[deptId]?.trim()) return;
+    if (!yearInputs[deptId]) return;
 
     try {
       const response = await axios.post(
@@ -67,19 +68,21 @@ const Management = () => {
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
 
-      const newYear = response.data.year;
-
       setDepartments((prev) =>
         prev.map((dept) =>
           dept._id === deptId
-            ? { ...dept, years: [...(dept.years || []), newYear] }
+            ? { ...dept, years: [...dept.years, response.data.year] }
             : dept
         )
       );
 
       setYearInputs((prev) => ({ ...prev, [deptId]: "" }));
+      setYearErrors((prev) => ({ ...prev, [deptId]: "" })); // ✅ Clear error on success
     } catch (error) {
       console.error("Error adding year:", error);
+      if (error.response && error.response.data.error) {
+        setYearErrors((prev) => ({ ...prev, [deptId]: error.response.data.error })); // ✅ Set error message
+      }
     }
   };
 
@@ -100,43 +103,55 @@ const Management = () => {
       </div>
       <div className={styles.listContainer}>
         {departments.length > 0 ? (
-          departments.map((dept) => (
-            <div key={dept._id} className ={styles.departmentCard}>
-              <h3>{dept.name}</h3>
-              <p>Years: {dept.years.length}</p>
-              <button
-                onClick={() => toggleYearManagement(dept._id)}
-                className={styles.manageYearsButton}
-              >
-                {expandedDept === dept._id ? "Close Year Management" : "Manage Years"}
-              </button>
-              {expandedDept === dept._id && (
-                <div className={styles.yearManagement}>
-                  <div className={styles.yearInputSection}>
-                    <input
-                      type="text"
-                      value={yearInputs[dept._id] || ""}
-                      onChange={(e) => handleYearInputChange(dept._id, e.target.value)}
-                      placeholder="Enter year"
-                      className={styles.input}
-                    />
-                    <button onClick={() => addYear(dept._id)} className={styles.addYearButton}>
-                      Add Year
-                    </button>
+          departments.map((dept) => {
+            const existingYears = dept.years.map((y) => y.name);
+            const availableYears = yearOptions.filter((year) => !existingYears.includes(year));
+
+            return (
+              <div key={dept._id} className={styles.departmentCard}>
+                <h3>{dept.name}</h3>
+                <p>Years: {dept.years.length}</p>
+                <button
+                  onClick={() => toggleYearManagement(dept._id)}
+                  className={styles.manageYearsButton}
+                >
+                  {expandedDept === dept._id ? "Close Year Management" : "Manage Years"}
+                </button>
+                {expandedDept === dept._id && (
+                  <div className={styles.yearManagement}>
+                    <div className={styles.yearInputSection}>
+                      <select
+                        value={yearInputs[dept._id] || ""}
+                        onChange={(e) => handleYearSelection(dept._id, e.target.value)}
+                        className={styles.input}
+                      >
+                        <option value="" disabled>Select year</option>
+                        {availableYears.map((year) => (
+                          <option key={year} value={year}>{year}</option>
+                        ))}
+                      </select>
+                      <button onClick={() => addYear(dept._id)} className={styles.addYearButton}>
+                        Add Year
+                      </button>
+                    </div>
+
+                    {/* ✅ Show error message if year already exists */}
+                    {yearErrors[dept._id] && (
+                      <p className={styles.errorText}>{yearErrors[dept._id]}</p>
+                    )}
+
+                    <ul className={styles.yearList}>
+                      {dept.years.map((year, index) => (
+                        <li key={index} className={styles.yearItem}>
+                          {year.name || `Year ${index + 1}`}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className={styles.yearList}>
-                    {dept.years.map((year,index) => (
-                      <li key={year._id} className={styles.yearItem}>
-                        {
-                            (index==0)?"First":(index == 1)?"Second":(index == 2)?"Third":"Fourth"
-                        }
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          ))
+                )}
+              </div>
+            );
+          })
         ) : (
           <p>No departments available</p>
         )}

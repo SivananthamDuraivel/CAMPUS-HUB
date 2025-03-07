@@ -30,7 +30,7 @@ input, select {
 }
 
 .add-btn {
-  background-color: #28a745;
+  background-color: #02265b;
   color: white;
   border: none;
   padding: 10px;
@@ -39,7 +39,7 @@ input, select {
 }
 
 .add-btn:hover {
-  background-color: #218838;
+  background-color: #0b3d89;
 }
 
 .day-container {

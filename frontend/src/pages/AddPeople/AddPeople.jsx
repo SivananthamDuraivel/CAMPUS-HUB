@@ -17,20 +17,22 @@ const AddUser = () => {
   }, [query]);
 
   const [departments, setDepartments] = useState([]);
+  const [years, setYears] = useState([]); // State for years
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [department, setDepartment] = useState("");
+  const [year, setYear] = useState("");
   const [message, setMessage] = useState("");
 
+  // Fetch all departments
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/department/getAllDepts", {
         headers: { Authorization: `Bearer ${user.token}` },
       })
       .then((response) => {
-        console.log("Fetched Departments:", response.data.departments);
         setDepartments(response.data.departments || []);
       })
       .catch(() => {
@@ -38,14 +40,36 @@ const AddUser = () => {
       });
   }, [user]);
 
+  useEffect(() => {
+    if (!department || formType === "teacher") {
+      setYears([]); 
+      return;
+    }
+
+    axios
+      .get(`http://localhost:5000/api/year/getAllYears/${department}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
+      .then((response) => {
+        setYears(response.data.years || []);
+      })
+      .catch(() => {
+        setYears([]);
+      });
+  }, [department, formType, user]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
       name,
       email,
       password,
-      department, // Include selected department in data
+      department,
     };
+
+    if (formType === "student") {
+      data.year = year;
+    }
 
     try {
       const route =
@@ -63,7 +87,8 @@ const AddUser = () => {
       setName("");
       setEmail("");
       setPassword("");
-      setDepartment(""); // Reset department selection
+      setDepartment("");
+      setYear(""); // Reset year selection
     } catch (error) {
       console.error("Error adding user:", error);
       setMessage("There was an error adding the user.");
@@ -98,7 +123,7 @@ const AddUser = () => {
             required
           />
 
-          {/* Fixed Select Dropdown */}
+          {/* Department Select Dropdown */}
           <select
             name="depts"
             id="depts"
@@ -110,11 +135,37 @@ const AddUser = () => {
               Select Department
             </option>
             {departments.map((dept) => (
-              <option key={dept.name} value={dept.name}>
+              <option key={dept._id} value={dept._id}>
                 {dept.name}
               </option>
             ))}
           </select>
+
+          {/* Year Select Dropdown (Only for students) */}
+          {formType === "student" && department && (
+            <select
+              name="years"
+              id="years"
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+              required
+            >
+              <option value="" disabled>
+                Select Year
+              </option>
+              {years.length > 0 ? (
+                years.map((yr) => (
+                  <option key={yr._id} value={yr._id}>
+                    {yr.yearName}
+                  </option>
+                ))
+              ) : (
+                <option value="" disabled>
+                  No years available
+                </option>
+              )}
+            </select>
+          )}
 
           <button type="submit">
             Add {formType === "student" ? "Student" : "Teacher"}

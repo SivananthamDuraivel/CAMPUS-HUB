@@ -1,63 +1,79 @@
 import { FaUserPlus, FaChalkboardTeacher, FaCalendarAlt } from "react-icons/fa";
-import { MdEvent, MdWork, MdViewList } from "react-icons/md";
+import { MdEvent, MdWork, MdViewList, MdNoteAdd, MdQuestionAnswer } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
 
 const features = [
   {
     id: 1,
+    name: "Manage departments",
+    description: "Manage departments in college",
+    icon: IoSettingsSharp,
+    route: "/management",
+    access: ["admin"],
+  },
+  {
+    id: 2,
     name: "Add Students",
     description: "Register new students into the system.",
     icon: FaUserPlus,
     route: "/addPeople?query=student",
-    access: ["admin"], // Only admins can access this
+    access: ["admin"], 
   },
   {
-    id: 2,
+    id: 3,
     name: "Add Teachers",
     description: "Register and manage teacher profiles.",
     icon: FaChalkboardTeacher,
     route: "/addPeople?query=teacher",
-    access: ["admin"], // Only admins can access this
+    access: ["admin"], 
   },
   {
-    id: 3,
+    id: 4,
     name: "Add Timetable",
     description: "Insert and update class timetables.",
     icon: FaCalendarAlt,
     route: "/timetable",
-    access: ["admin", "teacher"], // Teachers can also update the timetable
+    access: ["admin", "teacher"], 
   },
   {
-    id: 4,
+    id: 5,
     name: "Create Event",
     description: "Plan and manage campus events efficiently.",
     icon: MdEvent,
     route: "/createEvent",
-    access: ["admin", "teacher"], // Admins & teachers can manage events
+    access: ["admin", "teacher"], 
   },
   {
-    id: 5,
+    id: 6,
     name: "Exam Hall Planner",
     description: "Organize and assign exam halls effectively.",
     icon: MdWork,
     route: "/examHallPlanner",
-    access: ["admin"], // Only admins can access this
+    access: ["admin"], 
   },
   {
-    id: 6,
+    id: 7,
     name: "View Students and Teachers",
     description: "Access detailed lists of students and teachers.",
     icon: MdViewList,
     route: "/viewUsers",
-    access: ["admin", "teacher"], // Teachers can also view users
+    access: ["admin", "teacher"], 
   },
   {
-    id: 7,
-    name: "Control Access",
-    description: "Manage permissions and system access.",
-    icon: IoSettingsSharp,
-    route: "/controlAccess",
-    access: ["admin"], // Only admins can access this
+    id: 8,
+    name: "Study Materials",
+    description: "Upload study materials for students.",
+    icon: MdNoteAdd,
+    route: "/studymaterial",
+    access: ["admin", "teacher"], 
+  },
+  {
+    id: 9,
+    name: "Q&A Section",
+    description: "Ask questions and discuss academic topics.",
+    icon: MdQuestionAnswer,
+    route: "/question",
+    access: ["admin", "teacher", "student"], 
   },
 ];
 
