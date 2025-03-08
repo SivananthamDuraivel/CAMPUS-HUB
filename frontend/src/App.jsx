@@ -15,6 +15,7 @@ import Sample from "./components/Sample/Sample";
 import StudyMaterial from './pages/StudyMaterialFeature/StudyMaterial/StudyMaterial';
 import Questions from './pages/Questions/Questions';
 import Management from './pages/Management/Management'
+import View from "./pages/ViewTimeTable/View"
 import "./App.css"
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
             <Route path="/admin" element={user?<Admin/>:<LandingPage/>}></Route>
             <Route path="/management" element={user?<Management/>:<LandingPage/>}></Route>
             <Route path="/sample" element={user?<Sample/>:<LandingPage/>}></Route>
+            <Route path="/view" element={user?<View/>:<LandingPage/>}></Route>
             <Route path="/auth" element={!user?<Auth/>:<Navigate to = "/" />}></Route>
             <Route path="/" element={user?<Admin/>:<LandingPage/>}></Route>
           </Routes>

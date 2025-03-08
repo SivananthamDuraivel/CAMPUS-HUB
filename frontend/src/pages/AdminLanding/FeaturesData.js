@@ -62,10 +62,10 @@ const features = [
   {
     id: 8,
     name: "Study Materials",
-    description: "Upload study materials for students.",
+    description: "Upload and view study materials",
     icon: MdNoteAdd,
     route: "/studymaterial",
-    access: ["admin", "teacher"], 
+    access: ["admin", "teacher", "student"], 
   },
   {
     id: 9,
@@ -74,6 +74,14 @@ const features = [
     icon: MdQuestionAnswer,
     route: "/question",
     access: ["admin", "teacher", "student"], 
+  },  
+  {
+    id: 10,
+    name: "View Timetable",
+    description: "Insert and update class timetables.",
+    icon: FaCalendarAlt,
+    route: "/view",
+    access: ["student"], 
   },
 ];
 
