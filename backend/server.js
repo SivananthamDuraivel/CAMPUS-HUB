@@ -1,5 +1,8 @@
 require("dotenv").config();
 
+const bodyParser = require("body-parser");
+const summarizerRoute = require("./routes/summarizerRoute");
+
 const express = require("express");
 const auth = require("./routes/authRoute");
 const userRoute = require("./routes/userRoutes");
@@ -20,6 +23,9 @@ app.use(cors({
   origin: 'http://localhost:5173',
 }));
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
@@ -34,6 +40,7 @@ app.use("/api/timetable",timetableRoute);
 app.use("/api/department",departmentRoute);
 app.use("/api/year", yearRoute);
 app.use("/api/section", sectionRoute);
+app.use("/api", summarizerRoute);
 
 app.get("/",(req,res)=>{
   res.json("Campus Grid");
