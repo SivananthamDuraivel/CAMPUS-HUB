@@ -12,6 +12,8 @@ import ViewUsers from './pages/ViewUsers/ViewUsers'
 import Footer from "./components/Footer/Footer";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Sample from "./components/Sample/Sample";
+import StudentTimeTable from "./components/StudentTimetable/StudentTimeTable";
+
 import StudyMaterial from './pages/StudyMaterialFeature/StudyMaterial/StudyMaterial';
 import Questions from './pages/Questions/Questions';
 import Management from './pages/Management/Management'
@@ -38,6 +40,7 @@ function App() {
             <Route path='/studyMaterial' element={user? <StudyMaterial/> : <LandingPage/>}></Route>
             <Route path='/question' element={user ? <Questions/> : <LandingPage/>}></Route>
             <Route path="/createEvent" element={user?<CreateEvent/>:<LandingPage/>}></Route>
+            <Route path="/studTimeTable" element={user?<StudentTimeTable/>:<LandingPage/>}></Route>
             <Route path="/timetable" element={user?<TimeTable/>:<LandingPage/>}></Route>
             <Route path='/text' element={<TextSummarizer/>}></Route>
             <Route path="/viewUsers" element={user?<ViewUsers/>:<LandingPage/>}></Route>

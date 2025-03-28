@@ -111,7 +111,7 @@ const addStudent = async (req, res) => {
       <p style="font-size: 0.9em; color: #888;"><strong>Note:</strong> This is an automated email. Please do not reply directly to this message.</p>
     </div>
   `;
-  
+  console.log("HEllo")
     sendEmail(message,email);
     res.status(200).json({ email, token });
   } catch (error) {
