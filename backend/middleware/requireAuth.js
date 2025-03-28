@@ -9,10 +9,14 @@ const requireAuth = async (req,res,next) => {
   }
 
   const token = authorization.split(' ')[1]
+
+
   
   try {
     const {_id} = jwt.verify(token,process.env.SECRET_KEY)
+    console.log(_id)
     req.user = await User_details.findOne({_id}).select('_id role college')
+    console.log(req.user)
     next()
   }
   catch(error)
@@ -24,4 +28,4 @@ const requireAuth = async (req,res,next) => {
 
 }
 
-module.exports = requireAuth; 
+module.exports = requireAuth;

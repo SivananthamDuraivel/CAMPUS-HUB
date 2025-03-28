@@ -1,0 +1,58 @@
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.heading {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+}
+
+.dayCard {
+  background: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.day {
+  font-size: 20px;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  background: #007bff;
+  color: white;
+}
+
+.table tr:hover {
+  background: #f1f1f1;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+}
+
+.error {
+  text-align: center;
+  color: red;
+}

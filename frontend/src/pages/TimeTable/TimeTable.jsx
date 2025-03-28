@@ -83,9 +83,24 @@ const Timetable = () => {
 
   const handlePeriodChange = (dayIndex, periodIndex, field, value) => {
     const updatedDays = [...formData.days];
+    const period = updatedDays[dayIndex].timetable[periodIndex];
+  
+    if (field === "startTime") {
+      if (period.endTime && value >= period.endTime) {
+        alert("Start time must be before end time.");
+        return;
+      }
+    } else if (field === "endTime") {
+      if (period.startTime && value <= period.startTime) {
+        alert("End time must be after start time.");
+        return;
+      }
+    }
+  
     updatedDays[dayIndex].timetable[periodIndex][field] = value;
     setFormData({ ...formData, days: updatedDays });
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
