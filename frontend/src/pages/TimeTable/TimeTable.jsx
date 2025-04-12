@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import styles from "./Timetable.module.css";
+import styles from "./TimeTable.module.css";
 import { useAuthContext } from "../../hooks/useAuthContext";
 
 const Timetable = () => {
