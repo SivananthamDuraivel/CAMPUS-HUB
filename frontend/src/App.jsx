@@ -19,6 +19,7 @@ import Questions from './pages/Questions/Questions';
 import Management from './pages/Management/Management'
 import View from "./pages/ViewTimeTable/View"
 import "./App.css"
+import TextSummarizer from './pages/TextSummarizer/TextSummarizer';
 
 function App() {
   const {user} = useAuthContext()
@@ -41,6 +42,7 @@ function App() {
             <Route path="/createEvent" element={user?<CreateEvent/>:<LandingPage/>}></Route>
             <Route path="/studTimeTable" element={user?<StudentTimeTable/>:<LandingPage/>}></Route>
             <Route path="/timetable" element={user?<TimeTable/>:<LandingPage/>}></Route>
+            <Route path='/text' element={<TextSummarizer/>}></Route>
             <Route path="/viewUsers" element={user?<ViewUsers/>:<LandingPage/>}></Route>
             <Route path="/admin" element={user?<Admin/>:<LandingPage/>}></Route>
             <Route path="/management" element={user?<Management/>:<LandingPage/>}></Route>

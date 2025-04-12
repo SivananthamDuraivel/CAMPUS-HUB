@@ -165,7 +165,7 @@ const StudyMaterial = () => {
                     <h3>Study Materials:</h3>
                     {loading.materials ? (
                         <div className="sm-spinner"></div>
-                    ) : (
+                    ) : (   
                         <div className="sm-materials-list">
                             {/* Loop through topics */}
                             {data.materials.map((topic, topicIndex) => (
@@ -178,10 +178,14 @@ const StudyMaterial = () => {
                                         <ul className="sm-file-list">
                                             {/* Loop through files under each topic */}
                                             {topic.files.map((file, fileIndex) => {
-                                                const rawUrl = convertToRawUrl(file.url); // Convert GitHub URL to raw URL
-                                                const viewerUrl = `https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(rawUrl)}`;
+                                                const rawUrl = convertToRawUrl(file.url); // Convert GitHub URL to raw format
+
+                                                // Universal viewer URL
+                                                const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(rawUrl)}&embedded=true`;
+
                                                 return (
                                                     <li key={fileIndex} className="sm-file-item">
+                                                        {/* Open in a universal viewer */}
                                                         <a
                                                             href={viewerUrl}
                                                             target="_blank"
@@ -190,21 +194,26 @@ const StudyMaterial = () => {
                                                         >
                                                             {file.name || `File ${fileIndex + 1}`}
                                                         </a>
+
+                                                        {/* Download Button */}
                                                         <button
                                                             onClick={() => {
                                                                 const link = document.createElement("a");
                                                                 link.href = rawUrl;
-                                                                link.download = file.name || `File-${fileIndex + 1}.pdf`;
+                                                                link.setAttribute("download", file.name || `File-${fileIndex + 1}`);
+                                                                document.body.appendChild(link);
                                                                 link.click();
+                                                                document.body.removeChild(link);
                                                             }}
                                                             className="sm-download-btn"
-                                                            title="Download PDF"
+                                                            title="Download File"
                                                         >
                                                             <FiDownload />
                                                         </button>
                                                     </li>
                                                 );
                                             })}
+
 
 
 
