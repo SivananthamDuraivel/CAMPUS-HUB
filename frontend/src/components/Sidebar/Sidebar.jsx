@@ -5,9 +5,15 @@ import { Link } from 'react-router-dom';
 import { SidebarData } from './SidebarData';
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { IconContext } from 'react-icons';
+import { useLogout } from "../../hooks/useLogout";
 import './Sidebar.css';
-
+import { FaCalendarAlt } from 'react-icons/fa';
+import { FiLogOut } from 'react-icons/fi';
+import shape from "../../pages/Landing/assets/logo.png";
+import {useNavigate} from "react-router-dom"
 function Navbar() {
+  const navigate = useNavigate();
+  const { logout } = useLogout();
   const {user} = useAuthContext();
   const role = user.role;
   console.log(role)
@@ -17,6 +23,11 @@ function Navbar() {
 
   const items = SidebarData[role] || [];
 
+  const handleClick = () => {
+    console.log("Hello");
+    logout();
+  };
+
   return (
     <>
     <IconContext.Provider value={{ color: '#fff' }}>
@@ -24,6 +35,14 @@ function Navbar() {
         <Link to='#' className='menu-bars'>
           <FaIcons.FaBars onClick={showSidebar} />
         </Link>
+        <div className="">
+          <div className="logo" onClick={()=>navigate("/")}>
+            <img src={shape} alt="" className="logo-icon"/>
+            <p className="app-name">
+              Campus Grid
+            </p>
+          </div>
+        </div>
       </div>
 
       <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
@@ -42,6 +61,12 @@ function Navbar() {
               </Link>
             </li>
           ))}
+          <li className="nav-text">
+            <Link onClick={()=>logout()}>
+              <span><FiLogOut/></span>
+              <span className="">Logout</span>
+            </Link>
+          </li>
         </ul>
       </nav>
       </IconContext.Provider>

@@ -91,4 +91,28 @@ const getTimetableForUser = async (req, res) => {
 };
 
 
-module.exports = { insertTimetable, getTimetable, getTimetableForUser };
+const getCollegeTimetable = async (req, res) => {
+  try {
+    const admin = await User_details.findById(req.user._id);
+
+    if (!admin || admin.role !== "admin") {
+      return res.status(403).json({ error: "Access denied. Admins only." });
+    }
+
+    if (!admin.college) {
+      return res.status(400).json({ error: "Admin is not associated with any college" });
+    }
+
+    const timetables = await Timetable.find({ college: admin.college })
+      .populate("department", "name")
+      .populate("year", "yearName")
+      .sort({ "days.day": 1 });
+
+    res.status(200).json({ success: true, timetables });
+  } catch (error) {
+    console.error("Error fetching college timetable:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+module.exports = { insertTimetable, getTimetable, getTimetableForUser, getCollegeTimetable};

@@ -3,7 +3,7 @@ import axios from "axios";
 import Select from "react-select";
 import '../Questions/Questions.css'
 import { useAuthContext } from "../../hooks/useAuthContext";
-
+import Sidebar from "../../components/Sidebar/Sidebar";
 const Questions = () => {
 
     const { user } = useAuthContext();
@@ -146,6 +146,8 @@ const Questions = () => {
 
 
     return (
+        <>
+        <Sidebar/>
         <div className="QA-container">
             <div className="QA-header-container">
                 <button className="QA-post-btn" onClick={() => setIsPostModalOpen(true)}>Write a Post</button>
@@ -316,6 +318,7 @@ const Questions = () => {
             )}
 
         </div>
+        </>
     );
 };
 

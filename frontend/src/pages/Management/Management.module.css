@@ -25,14 +25,17 @@
 .input {
   flex-grow: 1;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 2px solid #000;
   border-radius: 5px;
   font-size: 1rem;
 }
 
 .addButton {
-  background: #007bff;
+  background: #02265b;
   color: white;
+  height: 100%;
+  display: flex;
+  align-self: center;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
@@ -76,7 +79,7 @@
 }
 
 .manageYearsButton:hover {
-  background: #0066ff;
+  background: #0056b3
 }
 
 .yearManagement {
@@ -94,7 +97,11 @@
 .addYearButton {
   background: #17a2b8;
   color: white;
-  padding: 8px 12px;
+  /* padding: 8px 12px; */
+  height: 100%;
+  display: flex;
+  align-self: center;
+  padding: 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;

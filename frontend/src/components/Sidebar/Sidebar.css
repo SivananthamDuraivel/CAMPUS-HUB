@@ -2,7 +2,7 @@
   background-color: #2c3e50;
   height: 80px;
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -22,6 +22,11 @@
   top: 0;
   left: -100%;
   transition: 850ms;
+  overflow: scroll;
+}
+
+.nav-menu::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-menu.active {
@@ -69,4 +74,30 @@
 
 span {
   margin-left: 16px;
+}
+
+
+.logo {
+  display: flex;
+  margin-right: 20px;
+}
+
+.logo-icon {
+  width: 50x;
+  height: 30px;
+}
+
+
+.logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.logo p {
+  color: #fff;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  font-weight: 700;
+  margin-left: 10px;
 }
