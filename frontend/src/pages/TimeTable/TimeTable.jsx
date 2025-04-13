@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./TimeTable.module.css";
 import { useAuthContext } from "../../hooks/useAuthContext";
-
+import Sidebar from "../../components/Sidebar/Sidebar";
 const Timetable = () => {
   const [departments, setDepartments] = useState([]);
   const [years, setYears] = useState([]);
@@ -117,6 +117,8 @@ const Timetable = () => {
   };
 
   return (
+    <>
+    <Sidebar />
     <div className={styles["container"]}>
       <h2>Add TimeTable</h2>
       <form onSubmit={handleSubmit}>
@@ -170,6 +172,7 @@ const Timetable = () => {
         <button type="submit" >Submit</button>
       </form>
     </div>
+    </>
   );
 };
 

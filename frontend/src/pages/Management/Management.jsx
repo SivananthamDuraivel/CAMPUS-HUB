@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import styles from "./Management.module.css";
-
+import Sidebar from "../../components/Sidebar/Sidebar";
 const yearOptions = ["First", "Second", "Third", "Fourth"];
 
 const Management = () => {
@@ -87,6 +87,8 @@ const Management = () => {
   };
 
   return (
+    <>
+    <Sidebar />
     <div className={styles.container}>
       <h2 className={styles.title}>Department Management</h2>
       <div className={styles.addSection}>
@@ -157,6 +159,7 @@ const Management = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

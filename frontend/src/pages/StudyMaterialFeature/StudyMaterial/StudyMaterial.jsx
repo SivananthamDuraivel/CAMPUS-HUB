@@ -4,7 +4,7 @@ import axios from "axios";
 import UploadMaterial from "../uploadMaterial/UploadMaterial";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import { FiDownload } from "react-icons/fi";
-
+import Sidebar from "../../../components/Sidebar/Sidebar";
 const StudyMaterial = () => {
 
     const { user } = useAuthContext();
@@ -98,6 +98,8 @@ const StudyMaterial = () => {
     }
 
     return (
+       <>
+             <Sidebar />
         <div>
             <br />
             <center><h1>Study Materials</h1></center>
@@ -228,6 +230,7 @@ const StudyMaterial = () => {
 
         </div>
         </div>
+       </>
     );
 };
 

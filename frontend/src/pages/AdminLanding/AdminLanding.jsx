@@ -4,6 +4,8 @@ import data from "./FeaturesData";
 import { Link } from "react-router-dom";
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import shape from "../Landing/assets/logo.png";
+
 
 const Features = () => {
   const { user } = useAuthContext();
@@ -32,8 +34,16 @@ const Features = () => {
 
   return (
     <>
-      <div className={features["logout-btn"]}>
-        <button onClick={handleClick}>Logout</button>
+      <div className={features["navbar"]}>
+        <div className={features["logo"]}>
+          <img src={shape} alt="" className={features["logo-icon"]} />
+          <p className={features["app-name"]}>
+            Campus Grid
+          </p>
+        </div>
+        <div className={features["logout-btn"]}>
+          <button onClick={handleClick}>Logout</button>
+        </div>
       </div>
       <div>
         <header className={features["header"]}>

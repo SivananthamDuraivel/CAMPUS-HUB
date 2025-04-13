@@ -2,9 +2,10 @@
   width: 50%;
   margin: auto;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #f9f9f9;
+  border-radius: 5px;
+  background-color: #5bacdf;
+  margin-top: 40px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.5);
 }
 
 h2 {
@@ -20,6 +21,7 @@ form {
 label {
   font-weight: bold;
   margin-top: 10px;
+  margin-bottom: 5px;
 }
 
 input, select {
@@ -34,7 +36,7 @@ input, select {
   color: white;
   border: none;
   padding: 10px;
-  margin: 10px 0;
+  margin: 20px 0;
   cursor: pointer;
 }
 
@@ -46,6 +48,7 @@ input, select {
   border: 1px solid #ccc;
   padding: 10px;
   margin-top: 10px;
+  margin-bottom: 20px;
   border-radius: 5px;
   background-color: #e9ecef;
 }
@@ -70,4 +73,14 @@ input, select {
 
 .submit-btn:hover {
   background-color: #0056b3;
+}
+
+.period-container input {
+  display: block;
+  width: 100%;
+}
+
+.day-container label, .day-container select {
+  display: block;
+  width: 100%;
 }
